@@ -2,7 +2,7 @@
 #define OPCODE_SUB 0b0001 // subtract
 #define OPCODE_MUL 0b0010 // multiply
 #define OPCODE_LDI 0b0011 // load immediate
-#define OPCODE_BEZ 0b0100 // branch if equal to zero
+#define OPCODE_BEQZ 0b0100 // branch if equal to zero
 #define OPCODE_AND 0b0101 // and
 #define OPCODE_OR  0b0110 // or
 #define OPCODE_JR  0b0111 // jump register
