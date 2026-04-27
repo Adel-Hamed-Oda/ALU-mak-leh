@@ -2,6 +2,18 @@
 Expandability be damned, unleash the spaghetti
 
 ## General Notes
+Whoever doesn't know how to use out_parameters here is an example:
+```c
+int main(void) {
+    int int1 = 1;
+    int int2;
+    intcpy(int1, &int2);
+}
+
+void strcpy(char *input, char *output) {
+    // copy integer
+}
+```
 
 ## Asset Notes
 [ These are files like images and videos that don't include code ]

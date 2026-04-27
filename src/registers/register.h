@@ -3,7 +3,6 @@
 #define REGISTER_TYPE_GP 2
 
 typedef struct {
-    int index;
     int content : 8;
     int register_type;
 } ca_register;

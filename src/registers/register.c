@@ -17,31 +17,29 @@ void initialize_registers() {
 }
 
 ca_register create_register(int RegisterType) {
-    static int register_index = 0;
     ca_register reg;
-    reg.index = register_index++;
     reg.content = 0;
     reg.register_type = RegisterType;
     return reg;
 }
 
 void print_registers() {
-    printf("PC Register: Index: %d, Content: %d\n", pc.index, pc.content);
-    printf("Status Register: Index: %d, Content: %d\n", status.index, status.content);
+    printf("PC Register: Content: %d\n", pc.content);
+    printf("Status Register: Content: %d\n", status.content);
     for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        printf("GP Register %d: Index: %d, Content: %d\n", i, general_purpose[i].index, general_purpose[i].content);
+        printf("GP Register %d: Content: %d\n", i, general_purpose[i].content);
     }
 }
 
 void print_register(int index) {
-    if (index == pc.index) {
-        printf("PC Register: Index: %d, Content: %d\n", pc.index, pc.content);
-    } else if (index == status.index) {
-        printf("Status Register: Index: %d, Content: %d\n", status.index, status.content);
+    if (index == 0) {
+        printf("PC Register: Content: %d\n", pc.content);
+    } else if (index == 1) {
+        printf("Status Register: Content: %d\n", status.content);
     } else {
         for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-            if (index == general_purpose[i].index) {
-                printf("GP Register %d: Index: %d, Content: %d\n", i, general_purpose[i].index, general_purpose[i].content);
+            if (index == i) {
+                printf("GP Register %d: Content: %d\n", i, general_purpose[i].content);
                 return;
             }
         }

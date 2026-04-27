@@ -1,8 +1,6 @@
 #include "includes.h"
 #include "instruction_memory.h"
 
-#include "memory_words.h"
-
 static instruction_memory_word memory[NUMBER_OF_INSTRUCTION_MEMORY_WORDS];
 
 void initialize_instruction_memory() {
