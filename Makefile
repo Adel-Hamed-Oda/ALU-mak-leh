@@ -13,8 +13,11 @@ HDRS = $(wildcard *.h) $(wildcard src/*/*.h) $(wildcard src/*/*/*.h)
 # 3. Extract the folder paths from the files we found, and remove duplicates
 INCDIRS = $(sort $(dir $(SRCS) $(HDRS)))
 
-# 4. Automatically generate the -I flags for the compiler (e.g., -I./ -Isrc/memory/)
-INCFLAGS = $(addprefix -I, $(INCDIRS))
+# 4. Remove trailing slashes (Windows GCC hates trailing slashes!)
+INCDIRS_CLEAN = $(patsubst %/,%,$(INCDIRS))
+
+# 5. Automatically generate the -I flags (e.g., -I. -Isrc/memory)
+INCFLAGS = $(addprefix -I, $(INCDIRS_CLEAN))
 
 # Output executable name
 TARGET = CA_backend.exe

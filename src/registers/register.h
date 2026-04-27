@@ -2,9 +2,9 @@
 
 #include "includes.h"
 
-#define REGISTER_TYPE_GP 0
+#define REGISTER_TYPE_PC 0
 #define REGISTER_TYPE_STATUS 1
-#define REGISTER_TYPE_PC 2
+#define REGISTER_TYPE_GP 2
 
 typedef struct {
     int index;
