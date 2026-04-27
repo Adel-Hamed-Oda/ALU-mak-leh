@@ -3,14 +3,15 @@ Expandability be damned, unleash the spaghetti
 
 ## Notes
 Every .c file should only include 2 things:
-- "includes.h"
-- "\<c file name\>.h"
-
-Every .h file shouldn't include anything, unless we would add something extra ourselves like uint8_t
+```c
+#include "includes.h"
+#include "abc.h" // abc being the .c file name
+```
+Every .h file shouldn't include anything, unless we would add something extra ourselves like uint8_t which would require importing certain libraries
 
 you should type
 ```c
-make // yippe I can do this myself now
+make
 ```
 in the terminal to compile, and then type 
 ```c
