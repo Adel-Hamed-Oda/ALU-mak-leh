@@ -1,4 +1,6 @@
 #include "includes.h"
+#include "data_memory.h"
+
 #include "memory_words.h"
 
 static data_memory_word memory[NUMBER_OF_DATA_MEMORY_WORDS];
