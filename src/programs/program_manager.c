@@ -3,8 +3,6 @@
 
 static program* programs;
 
-
-
 void print_program_info(int index) {
     printf("Program Name: %s\n", programs[index].name);
     printf("Original File Name: %s\n", programs[index].original_file_name);

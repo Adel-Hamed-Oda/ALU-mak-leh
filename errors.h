@@ -4,4 +4,4 @@
 #define NAME_NOT_FOUND -3
 #define INDEX_NOT_FOUND -4
 
-#define FAILED(x) ((x) < 0)
+#define FAIL(x) ((x) < 0)

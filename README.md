@@ -8,27 +8,11 @@ int main(void) {
     int int1 = 1;
     int int2;
     intcpy(int1, &int2);
+    intcpy(int1, NULL); // if I don't care about this value
 }
 
 int strcpy(char *input, char *output) {
     // copy integer, return 0 on success
-}
-```
----
-There is also this when it comes to failures:
-```c
-int main(void) {
-    // ...
-
-    if (FAILS(strcpy)) {
-        // do something about failure
-    }
-
-    if (!FAILS(strcpy)) {
-        // do something about success
-    }
-
-    // ...
 }
 ```
 ## Asset Notes
@@ -62,3 +46,20 @@ int positive(int number) {
 }
 ```
 A consequence of this is that functions that should also have return values will now return it as a pointer from the function's arguments
+
+There is also this when it comes to failures:
+```c
+int main(void) {
+    // ...
+
+    if (FAIL(strcpy)) {
+        // do something about failure
+    }
+
+    if (!FAIL(strcpy)) {
+        // do something about success
+    }
+
+    // ...
+}
+```

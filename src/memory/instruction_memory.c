@@ -9,10 +9,6 @@ void initialize_instruction_memory() {
     }
 }
 
-int fetch_instruction(int index);
-// DESTRUCTIVE, USE WITH CAUTION
-int set_instruction(int index, int value);
-
 void print_instruction_memory() {
     printf("Instruction Memory:\n");
     for (int i = 0; i < NUMBER_OF_INSTRUCTION_MEMORY_WORDS; i++) {
