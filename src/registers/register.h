@@ -1,12 +1,10 @@
-#include "includes.h"
-
 #define REGISTER_TYPE_PC 0
 #define REGISTER_TYPE_STATUS 1
 #define REGISTER_TYPE_GP 2
 
 typedef struct {
     int index;
-    uint8_t content;
+    int content : 8;
     int register_type;
 } ca_register;
 

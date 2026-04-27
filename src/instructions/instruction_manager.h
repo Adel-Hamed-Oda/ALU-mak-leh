@@ -1,5 +1,3 @@
-#include "includes.h"
-
 #define OPCODE_ADD 0b0000 // add
 #define OPCODE_SUB 0b0001 // subtract
 #define OPCODE_MUL 0b0010 // multiply
@@ -14,9 +12,9 @@
 #define OPCODE_SB  0b1011 // store byte
 
 typedef struct {
-    uint8_t opcode : 4;
-    uint8_t r1 : 6;
-    uint8_t r2 : 6;
+    int opcode : 4;
+    int r1 : 6;
+    int r2 : 6;
 } instruction;
 
 // since immediate is the same structure as normal
