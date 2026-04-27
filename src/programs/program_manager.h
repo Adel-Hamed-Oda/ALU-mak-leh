@@ -5,6 +5,7 @@ typedef struct {
     int instruction_count;
 } program;
 
+//USE ASSEMBLER WHEN LOADING FROM FILE
 int load_program_from_file(char *file_name);
 int create_program(char *name, char *original_file_name, int* instructions);
 

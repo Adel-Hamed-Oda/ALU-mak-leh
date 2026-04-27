@@ -4,6 +4,6 @@
 #include "src/memory/data_memory.h"
 #include "src/registers/register.h"
 
-int main() {
-    return 0;
+int main(int argc, char *argv[]) {
+
 }
