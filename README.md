@@ -23,3 +23,15 @@ in the terminal to compile, and then type
 ./CA_backend.exe
 ```
 to run the program itself, the make program works by itself _(mahadesh yetfazlek w yghayyar fel Makefile, ha2telo)_
+
+Any function that should return errors should use the definitions in "errors.h", this would help in modularity and would make it easier to check from something like
+```c
+int positive(int number) {
+    if (number > 0) {
+        return SUCCESS;
+    } else {
+        return FAILURE;
+    }
+}
+```
+A consequence of this is that functions that should also have return values will now return it as a pointer from the function's arguments

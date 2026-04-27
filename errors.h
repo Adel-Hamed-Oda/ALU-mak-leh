@@ -1,0 +1,4 @@
+#define SUCCESS 0
+#define GENERAL_FAILURE -1
+#define OUT_OF_BOUNDS -2
+#define NAME_NOT_FOUND -3
