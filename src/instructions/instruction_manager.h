@@ -22,3 +22,9 @@ typedef struct {
 
 // BE CAREFUL, THIS SHIT WRAPS, NO ERROR OR CRASHING FA
 // SOMETHING MIGHT LOGICALLY GO WRONG BECAUSE OF IT
+
+// should take in 16 bits
+instruction decode_instruction(int instruction_word);
+
+// should return 16 bits
+int encode_instruction(instruction instr);

@@ -22,7 +22,7 @@ int set_value_at_n(char *name, int value) {
     return -1;
 }
 // DESTRUCTIVE, USE WITH CAUTION
-int set_value_at_index(int index, int value) {
+int set_value_at_i(int index, int value) {
     if (index < 0 || index >= NUMBER_OF_DATA_MEMORY_WORDS) {
         return -1; // Out of bounds
     }
