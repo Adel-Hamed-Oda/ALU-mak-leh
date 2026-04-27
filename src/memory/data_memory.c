@@ -17,7 +17,7 @@ void print_data_memory() {
     }
 }
 
-void print_data_memory(int start, int end) {
+void print_data_memory_l(int start, int end) {
     printf("Data Memory:\n");
     for (int i = start; i <= end; i++) {
         printf("Address %d: Name: %s, Value: %d\n", i, memory[i].name, memory[i].value);

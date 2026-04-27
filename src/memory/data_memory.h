@@ -3,6 +3,6 @@
 
 void initialize_data_memory();
 void print_data_memory();
-void print_data_memory(int start, int end);
+void print_data_memory_l(int start, int end);
 
 #endif // DATA_MEMORY_H

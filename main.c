@@ -9,8 +9,8 @@ int main() {
     initialize_data_memory();
 
     // Example usage
-    print_instruction_memory(0, 9);
-    print_data_memory(0, 9);
+    print_instruction_memory_l(0, 9);
+    print_data_memory_l(0, 9);
 
     return 0;
 }

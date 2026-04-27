@@ -1,23 +1,33 @@
-# 1. Define the compiler and flags
+# Compiler
 CC = gcc
-CFLAGS = -Wall -g -I.
 
-# 2. Automatically find main.c and all .c files in subfolders
-# (This assumes you renamed your folders to have no spaces!)
-SRCS = main.c $(wildcard */*.c)
+# Compiler flags
+CFLAGS = -Wall -g
 
-# 3. Name of the final output program
-TARGET = OS_Project.exe
+# 1. Dynamically find ALL .c files in root and inside src/ subfolders
+SRCS = $(wildcard *.c) $(wildcard src/*/*.c) $(wildcard src/*/*/*.c)
 
-# 4. The default rule (what happens when you just type 'make')
+# 2. Dynamically find ALL .h files so we know where your headers are
+HDRS = $(wildcard *.h) $(wildcard src/*/*.h) $(wildcard src/*/*/*.h)
+
+# 3. Extract the folder paths from the files we found, and remove duplicates
+INCDIRS = $(sort $(dir $(SRCS) $(HDRS)))
+
+# 4. Automatically generate the -I flags for the compiler (e.g., -I./ -Isrc/memory/)
+INCFLAGS = $(addprefix -I, $(INCDIRS))
+
+# Output executable name
+TARGET = CA_backend.exe
+
+# Default target
 all: $(TARGET)
 
-# 5. How to build the target
-# WARNING: The space before $(CC) MUST be a single TAB character, NOT spaces!
+# Compile all source files together into the executable
 $(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(TARGET)
+	$(CC) $(CFLAGS) $(INCFLAGS) $(SRCS) -o $(TARGET)
 
-# 6. A rule to clean up compiled files
-# WARNING: The space before rm MUST be a single TAB character!
+# Clean command for Windows
 clean:
-	rm -f $(TARGET)
+	del /Q $(TARGET)
+
+.PHONY: all clean

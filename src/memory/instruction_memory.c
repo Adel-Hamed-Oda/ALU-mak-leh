@@ -16,7 +16,7 @@ void print_instruction_memory() {
     }
 }
 
-void print_instruction_memory(int start, int end) {
+void print_instruction_memory_l(int start, int end) {
     printf("Instruction Memory:\n");
     for (int i = start; i <= end; i++) {
         printf("Address %d: Value: %d\n", i, memory[i].value);

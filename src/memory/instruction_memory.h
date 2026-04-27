@@ -3,6 +3,6 @@
 
 void initialize_instruction_memory();
 void print_instruction_memory();
-void print_instruction_memory(int start, int end);
+void print_instruction_memory_l(int start, int end);
 
 #endif // INSTRUCTION_MEMORY_H
