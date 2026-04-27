@@ -10,27 +10,6 @@ void initialize_data_memory() {
     }
 }
 
-// DESTRUCTIVE, USE WITH CAUTION
-int set_value_at_n(char *name, int value) {
-    for (int i = 0; i < NUMBER_OF_DATA_MEMORY_WORDS; i++) {
-        if (strcmp(memory[i].name, name) == 0) {
-            memory[i].value = value;
-            return 0;
-        }
-    }
-
-    return -1;
-}
-// DESTRUCTIVE, USE WITH CAUTION
-int set_value_at_i(int index, int value) {
-    if (index < 0 || index >= NUMBER_OF_DATA_MEMORY_WORDS) {
-        return -1; // Out of bounds
-    }
-    memory[index].value = value;
-
-    return 0;
-}
-
 void print_data_memory() {
     printf("Data Memory:\n");
     for (int i = 0; i < NUMBER_OF_DATA_MEMORY_WORDS; i++) {
