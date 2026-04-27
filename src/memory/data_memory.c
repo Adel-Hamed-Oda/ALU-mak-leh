@@ -10,15 +10,10 @@ void initialize_data_memory() {
     }
 }
 
-// the 4 next functions should return SUCCESS or FAILURE depending on errors.h
-int get_data_n(char *name, int *out_value);
-
-int get_data_i(int index, int *out_value);
-
-// DESTRUCTIVE, USE WITH CAUTION
-int set_data_n(char *name, int value);
-// DESTRUCTIVE, USE WITH CAUTION
-int set_data_i(int index, int value);
+// the 3 next functions should return SUCCESS or FAILURE depending on errors.h
+int get_data(int index, int *out_value);
+int set_data(int index, int value);
+int get_index(char *name, int *out_index);
 
 void print_data_memory() {
     printf("Data Memory:\n");

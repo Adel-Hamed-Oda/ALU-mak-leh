@@ -10,14 +10,29 @@ int main(void) {
     intcpy(int1, &int2);
 }
 
-void strcpy(char *input, char *output) {
-    // copy integer
+int strcpy(char *input, char *output) {
+    // copy integer, return 0 on success
 }
 ```
+---
+There is also this when it comes to failures:
+```c
+int main(void) {
+    // ...
 
+    if (FAILS(strcpy)) {
+        // do something about failure
+    }
+
+    if (!FAILS(strcpy)) {
+        // do something about success
+    }
+
+    // ...
+}
+```
 ## Asset Notes
 [ These are files like images and videos that don't include code ]
-
 ## SRC Notes
 [ These only apply to files in src ] Every .c file should include at least these 2 things:
 ```c
