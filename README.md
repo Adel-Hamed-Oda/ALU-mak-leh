@@ -1,6 +1,14 @@
 # ALU-mak-leh
 Expandability be damned, unleash the spaghetti
 
+## Pipeline
+the pipeline looks like this:
+- load programs into memory (either by gui or from files)
+- start one of them (depending on priority)
+- fetch an instruction using the instruction memory class
+- decode the instruction using the instruction manager class
+- execute the instruction using the parser class
+- repeat until the PC reaches a halt keyword (or something related to the limit, we are still gonna see how that works)
 ## General Notes
 Whoever doesn't know how to use out_parameters here is an example:
 ```c
@@ -15,6 +23,7 @@ int strcpy(char *input, char *output) {
     // copy integer, return 0 on success
 }
 ```
+Also I know the program manager is way too complicated since there should only be one program per cycle in the memory, but I won't take any chances bsara7a, just save the limits of every program and use part 9 of the general description of part 1:![alt text](<assets/Project Description/image.png>)
 ## Asset Notes
 [ These are files like images and videos that don't include code ]
 ## SRC Notes
@@ -46,6 +55,8 @@ int positive(int number) {
 }
 ```
 A consequence of this is that functions that should also have return values will now return it as a pointer from the function's arguments
+
+The reason we need a sophisticated error handling system is because we are required to handle errors as per the project description, fa m3lesh mafeesh return -1.
 
 There is also this when it comes to failures:
 ```c
