@@ -42,4 +42,6 @@ int execute_instruction(int opcode, int r1, int r2) {
         default:
             printf("Invalid opcode: %d\n", opcode);
     }
+
+    return SUCCESS; // I guess
 }

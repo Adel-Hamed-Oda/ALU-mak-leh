@@ -3,5 +3,6 @@
 #define OUT_OF_BOUNDS -2
 #define NAME_NOT_FOUND -3
 #define INDEX_NOT_FOUND -4
+#define ASSEMBLY_ERROR -5
 
 #define FAIL(x) ((x) < 0)
