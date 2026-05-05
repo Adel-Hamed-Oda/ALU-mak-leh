@@ -190,7 +190,7 @@ void reset() {
     free_memory_index = 0;
 }
 
-// HELPER FUNCTIONS
+#pragma region Helper Functions
 
 int translate_register_string_to_number(char *register_str, int *out_register_number) {
     if (register_str[0] != 'R') {
@@ -277,3 +277,5 @@ void free_splits(char **splits)
         free(*p);
     free(splits);
 }
+
+#pragma endregion

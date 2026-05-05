@@ -1,7 +1,3 @@
-#define REGISTER_TYPE_PC 0
-#define REGISTER_TYPE_STATUS 1
-#define REGISTER_TYPE_GP 2
-
 #define C_FLAG 0b00010000
 #define V_FLAG 0b00001000
 #define N_FLAG 0b00000100
@@ -10,8 +6,11 @@
 
 typedef struct {
     int content : 8;
-    int register_type;
-} ca_register;
+} register_8;
+
+typedef struct {
+    int content : 16;
+} register_16;
 
 void initialize_registers();
 
