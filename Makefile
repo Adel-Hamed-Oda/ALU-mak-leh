@@ -1,8 +1,8 @@
 # Compiler
 CC = gcc
 
-# Compiler flags
-CFLAGS = -Wall -g
+# Compiler flags (plus warning suppression for pragma)
+CFLAGS = -Wall -g -Wno-unknown-pragmas
 
 # 1. Dynamically find ALL .c files in root and inside src/ subfolders
 SRCS = $(wildcard *.c) $(wildcard src/*/*.c) $(wildcard src/*/*/*.c)
