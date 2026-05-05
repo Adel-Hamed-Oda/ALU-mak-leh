@@ -6,8 +6,8 @@
 void reset();
 char **split_by_spaces(const char *str, size_t *out_count);
 void free_splits(char **splits);
-int get_opcode_from_instruction_string(char *instruction_str, int *out_opcode);
-int translate_register_string_to_number(char *register_str, int *out_register_number);
+EXCEPTION get_opcode_from_instruction_string(char *instruction_str, int *out_opcode);
+EXCEPTION translate_register_string_to_number(char *register_str, int *out_register_number);
 
 // turns out making a whole ass map was too complicated, so Imma stick to 2 arrays
 char *instruction_map_str[] = {
@@ -44,7 +44,7 @@ char *variables[NUMBER_OF_DATA_MEMORY_WORDS];
 
 static int free_memory_index;
 
-int load_program_from_file(char *file_name) {
+EXCEPTION load_program_from_file(char *file_name) {
     reset();
 
     int instruction_count = 0;
@@ -65,7 +65,7 @@ int load_program_from_file(char *file_name) {
     return SUCCESS;
 }
 
-int assemble_instruction(char *assembly_line, int *out_instruction) {
+EXCEPTION assemble_instruction(char *assembly_line, int *out_instruction) {
     size_t token_count;
     char **tokens = split_by_spaces(assembly_line, &token_count);
 
@@ -141,7 +141,7 @@ int assemble_instruction(char *assembly_line, int *out_instruction) {
     return SUCCESS;
 }
 
-int assemble_program_from_file(char *file_name, int *out_instructions, int *out_instruction_count) {
+EXCEPTION assemble_program_from_file(char *file_name, int *out_instructions, int *out_instruction_count) {
     FILE *file = fopen(file_name, "r");
     if (!file) {
         return ASSEMBLY_ERROR;
@@ -192,7 +192,7 @@ void reset() {
 
 #pragma region Helper Functions
 
-int translate_register_string_to_number(char *register_str, int *out_register_number) {
+EXCEPTION translate_register_string_to_number(char *register_str, int *out_register_number) {
     if (register_str[0] != 'R') {
         return ASSEMBLY_ERROR;
     }
@@ -208,7 +208,7 @@ int translate_register_string_to_number(char *register_str, int *out_register_nu
     return SUCCESS;
 }
 
-int get_opcode_from_instruction_string(char *instruction_str, int *out_opcode) {
+EXCEPTION get_opcode_from_instruction_string(char *instruction_str, int *out_opcode) {
     for (int i = 0; i < sizeof(instruction_map_str) / sizeof(instruction_map_str[0]); i++) {
         if (strcmp(instruction_str, instruction_map_str[i]) == 0) {
             *out_opcode = instruction_map_opcodes[i];

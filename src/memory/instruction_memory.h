@@ -4,9 +4,9 @@ typedef struct {
 
 void initialize_instruction_memory();
 
-int fetch_instruction(int index, int *out_value);
+EXCEPTION fetch_instruction(int index, int *out_value);
 // DESTRUCTIVE, USE WITH CAUTION
-int set_instruction(int index, int value);
+EXCEPTION set_instruction(int index, int value);
 
 void clear_instruction_memory();
 

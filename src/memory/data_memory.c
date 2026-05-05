@@ -9,10 +9,9 @@ void initialize_data_memory() {
     }
 }
 
-// the 3 next functions should return SUCCESS or FAILURE depending on errors.h
-int get_data(int index, int *out_value);
-int set_data(int index, int value);
-int get_index(char *name, int *out_index);
+EXCEPTION get_data(int index, int *out_value);
+EXCEPTION set_data(int index, int value);
+EXCEPTION get_index(char *name, int *out_index);
 
 void clear_data_memory() {
     for (int i = 0; i < NUMBER_OF_DATA_MEMORY_WORDS; i++) {

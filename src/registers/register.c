@@ -35,7 +35,7 @@ register_16 create_register_16() {
 
 #pragma region Register Operationss
 
-int set_register(int index, int value) {
+EXCEPTION set_register(int index, int value) {
     for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
         if (index == i) {
             GPRS[i].content = value & 0xFF; // Ensure only the lower 8 bits are stored
@@ -45,7 +45,7 @@ int set_register(int index, int value) {
     return OUT_OF_BOUNDS; // Register index out of bounds
 }
 
-int get_register(int index, int *out_value) {
+EXCEPTION get_register(int index, int *out_value) {
     for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
         if (index == i) {
             *out_value = GPRS[i].content;
@@ -55,7 +55,7 @@ int get_register(int index, int *out_value) {
     return OUT_OF_BOUNDS; // Register index out of bounds
 }
 
-int clear_register(int index) {
+EXCEPTION clear_register(int index) {
     for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
         if (index == i) {
             GPRS[i].content = 0;
@@ -85,16 +85,14 @@ void increment_pc() {
 
 #pragma region Status Register Operations
 
-int get_flag(int flag) {
+int get_flag(STATUS_FLAG flag) {
     return (SREG.content & flag) != 0;
 }
 
-int update_status_register() {
+void update_status_register() {
     // I will leave this till Alaa or whoever is using the parser to implement
     // it cause I need these stuff to be done to be able to update the status register
     // properly, for now I am done
-
-    return SUCCESS;
 }
 
 #pragma endregion

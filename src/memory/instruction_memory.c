@@ -16,7 +16,15 @@ void initialize_instruction_memory() {
     }
 }
 
-int set_instruction(int index, int value) {
+EXCEPTION fetch_instruction(int index, int *out_value) {
+    if (index < 0 || index >= NUMBER_OF_INSTRUCTION_MEMORY_WORDS) {
+        return OUT_OF_BOUNDS;
+    }
+    *out_value = memory[index].value;
+    return SUCCESS;
+}
+
+EXCEPTION set_instruction(int index, int value) {
     if (index < 0 || index >= NUMBER_OF_INSTRUCTION_MEMORY_WORDS) {
         return OUT_OF_BOUNDS;
     }

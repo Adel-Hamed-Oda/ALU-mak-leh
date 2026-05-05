@@ -46,7 +46,7 @@ to run the program itself, the make program works by itself _(mahadesh yetfazlek
 
 Any function that should return errors should use the definitions in "errors.h", this would help in modularity and would make it easier to check from something like
 ```c
-int positive(int number) {
+EXCEPTION positive(int number) {
     if (number > 0) {
         return SUCCESS;
     } else {

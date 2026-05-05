@@ -6,7 +6,7 @@
 // translate the register number directly to the instruction
 
 // The format is probably R1 for register
-int load_program_from_file(char *file_name);
+EXCEPTION load_program_from_file(char *file_name);
 
 // You guys shouldn't need to do this but IDK
-int assemble_program_from_file(char *file_name, int *out_instructions, int *out_instruction_count);
+EXCEPTION assemble_program_from_file(char *file_name, int *out_instructions, int *out_instruction_count);

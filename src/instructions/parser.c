@@ -1,7 +1,7 @@
 #include "includes.h"
 #include "parser.h"
 
-int execute_instruction(int opcode, int r1, int r2) {
+EXCEPTION execute_instruction(int opcode, int r1, int r2) {
     switch (opcode) {
         case OPCODE_ADD:
             // add r1 and r2, store in r1
