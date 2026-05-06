@@ -16,6 +16,9 @@ typedef enum {
     OPCODE_LB   = 0b1010, // load byte
     OPCODE_SB   = 0b1011  // store byte
 } OPCODE;
+#define NUM_OPCODES 12
+
+extern char *instruction_map_str[NUM_OPCODES];
 
 typedef enum {
     C_FLAG = 0b00010000,
