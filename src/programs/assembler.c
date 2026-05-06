@@ -9,36 +9,21 @@ void free_splits(char **splits);
 EXCEPTION get_opcode_from_instruction_string(char *instruction_str, int *out_opcode);
 EXCEPTION translate_register_string_to_number(char *register_str, int *out_register_number);
 
-// turns out making a whole ass map was too complicated, so Imma stick to 2 arrays
+// turns out making a whole ass map was too complicated, so Imma stick a weird version of an array
 char *instruction_map_str[] = {
-    "ADD",
-    "SUB",
-    "MUL",
-    "LDI",
-    "BEQZ",
-    "AND",
-    "OR",
-    "JR",
-    "SAL",
-    "SAR",
-    "LB",
-    "SB"
+    [OPCODE_ADD] = "ADD",
+    [OPCODE_SUB] = "SUB",
+    [OPCODE_MUL] = "MUL",
+    [OPCODE_LDI] = "LDI",
+    [OPCODE_BEQZ] = "BEQZ",
+    [OPCODE_AND] = "AND",
+    [OPCODE_OR] = "OR",
+    [OPCODE_JR] = "JR",
+    [OPCODE_SAL] = "SAL",
+    [OPCODE_SAR] = "SAR",
+    [OPCODE_LB] = "LB",
+    [OPCODE_SB] = "SB"
 };
-int instruction_map_opcodes[] = {
-    0b0000, // ADD
-    0b0001, // SUB
-    0b0010, // MUL
-    0b0011, // LDI
-    0b0100, // BEQZ
-    0b0101, // AND
-    0b0110, // OR
-    0b0111, // JR
-    0b1000, // SAL
-    0b1001, // SAR
-    0b1010, // LB
-    0b1011  // SB
-};
-
 // akeed no more variables than number of available data memory words
 char *variables[NUMBER_OF_DATA_MEMORY_WORDS];
 
@@ -211,7 +196,7 @@ EXCEPTION translate_register_string_to_number(char *register_str, int *out_regis
 EXCEPTION get_opcode_from_instruction_string(char *instruction_str, int *out_opcode) {
     for (int i = 0; i < sizeof(instruction_map_str) / sizeof(instruction_map_str[0]); i++) {
         if (strcmp(instruction_str, instruction_map_str[i]) == 0) {
-            *out_opcode = instruction_map_opcodes[i];
+            *out_opcode = i & 0xF; // mask to 4 bits just in case
             return SUCCESS;
         }
     }
