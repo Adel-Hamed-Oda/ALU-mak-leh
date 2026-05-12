@@ -44,6 +44,45 @@ in the terminal to compile, and then type
 ```
 to run the program itself, the make program works by itself _(mahadesh yetfazlek w yghayyar fel Makefile, ha2telo)_
 
+## How to Run
+
+### 1. Build the project
+```bash
+make
+```
+
+### 2. Run with the default test program
+```bash
+./CA_backend.exe
+```
+This runs `programs/test0.txt` by default.
+
+### 3. Run with a custom assembly file
+```bash
+./CA_backend.exe programs/your_program.txt
+```
+
+### 4. Save output to a text file
+```bash
+./CA_backend.exe > output.txt
+```
+Results are saved to `output.txt` in the same folder.
+
+### 5. Run a custom file and save output
+```bash
+./CA_backend.exe programs/your_program.txt > output.txt
+```
+
+### 6. Save output and still see it in the terminal at the same time
+```bash
+./CA_backend.exe | tee output.txt
+```
+
+### Clean build files
+```bash
+make clean
+```
+
 Any function that should return errors should use the definitions in "errors.h", this would help in modularity and would make it easier to check from something like
 ```c
 EXCEPTION positive(int number) {

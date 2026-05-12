@@ -1,126 +1,105 @@
 #include "includes.h"
 #include "register.h"
 
-register_8 create_register_8();
-register_16 create_register_16();
-
 static register_16 PC;
-static register_8 SREG;
-static register_8 GPRS[NUMBER_OF_GP_REGISTERS];
+static register_8  SREG;
+static register_8  GPRS[NUMBER_OF_GP_REGISTERS];
 
-#pragma region Initialization Operations
+/* ---------- Initialization ---------- */
 
-void initialize_registers() {
-    PC = create_register_16();
-    SREG = create_register_8();
-
-    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        GPRS[i] = create_register_8();
-    }
+void initialize_registers(void) {
+    PC.content   = 0;
+    SREG.content = 0;
+    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++)
+        GPRS[i].content = 0;
 }
 
-register_8 create_register_8() {
-    register_8 reg;
-    reg.content = 0;
-    return reg;
-}
-
-register_16 create_register_16() {
-    register_16 reg;
-    reg.content = 0;
-    return reg;
-}
-
-#pragma endregion
-
-#pragma region Register Operationss
+/* ---------- GPR Operations ---------- */
 
 EXCEPTION set_register(int index, int value) {
-    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        if (index == i) {
-            GPRS[i].content = value & 0xFF; // Ensure only the lower 8 bits are stored
-            return SUCCESS;
-        }
-    }
-    return OUT_OF_BOUNDS; // Register index out of bounds
+    if (index < 0 || index >= NUMBER_OF_GP_REGISTERS)
+        return OUT_OF_BOUNDS;
+    GPRS[index].content = (int8_t)(value & 0xFF);
+    return SUCCESS;
 }
 
 EXCEPTION get_register(int index, int *out_value) {
-    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        if (index == i) {
-            *out_value = GPRS[i].content;
-            return SUCCESS;
-        }
-    }
-    return OUT_OF_BOUNDS; // Register index out of bounds
+    if (index < 0 || index >= NUMBER_OF_GP_REGISTERS)
+        return OUT_OF_BOUNDS;
+    *out_value = GPRS[index].content;
+    return SUCCESS;
 }
 
 EXCEPTION clear_register(int index) {
-    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        if (index == i) {
-            GPRS[i].content = 0;
-            return SUCCESS;
-        }
-    }
-    return OUT_OF_BOUNDS; // Register index out of bounds
+    if (index < 0 || index >= NUMBER_OF_GP_REGISTERS)
+        return OUT_OF_BOUNDS;
+    GPRS[index].content = 0;
+    return SUCCESS;
 }
 
-#pragma endregion
+/* ---------- PC Operations ---------- */
 
-#pragma region PC Operations
-
-int get_pc() {
-    return PC.content;
+int get_pc(void) {
+    return (int)(PC.content & 0xFFFF);
 }
 
 void set_pc(int new_pc) {
-    PC.content = new_pc & 0xFFFF;
+    PC.content = (int)(new_pc & 0xFFFF);
 }
 
-void increment_pc() {
-    PC.content = (PC.content + 1) & 0xFFFF;
+void increment_pc(void) {
+    PC.content = (int)((PC.content + 1) & 0xFFFF);
 }
 
-#pragma endregion
-
-#pragma region Status Register Operations
+/* ---------- SREG Operations ---------- */
 
 int get_flag(STATUS_FLAG flag) {
-    return (SREG.content & flag) != 0;
+    return (SREG.content & (int)flag) != 0;
 }
 
-void update_status_register() {
-    // I will leave this till Alaa or whoever is using the parser to implement
-    // it cause I need these stuff to be done to be able to update the status register
-    // properly, for now I am done
+void set_sreg_flag(STATUS_FLAG flag, int value) {
+    if (value)
+        SREG.content |= (int)flag;
+    else
+        SREG.content &= ~(int)flag;
+    SREG.content &= 0x1F;   /* keep only bits 4:0 */
 }
 
-#pragma endregion
+int get_sreg_full(void) {
+    return SREG.content & 0x1F;
+}
 
-#pragma region Debugging Operations
+void set_sreg_full(int val) {
+    SREG.content = val & 0x1F;
+}
 
-void print_registers() {
-    printf("PC Register: Content: %d\n", PC.content);
-    printf("Status Register: Content: %d\n", SREG.content);
-    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-        printf("GP Register %d: Content: %d\n", i, GPRS[i].content);
-    }
+/* ---------- Debug ---------- */
+
+void print_registers(void) {
+    printf("PC   = %d\n", get_pc());
+    printf("SREG = 0x%02X (C=%d, V=%d, N=%d, S=%d, Z=%d)\n",
+           get_sreg_full(),
+           get_flag(C_FLAG), get_flag(V_FLAG),
+           get_flag(N_FLAG), get_flag(S_FLAG), get_flag(Z_FLAG));
+    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++)
+        printf("R%-2d = %d\n", i, GPRS[i].content);
 }
 
 void print_register(int index) {
-    if (index == 0) {
-        printf("PC Register: Content: %d\n", PC.content);
-    } else if (index == 1) {
-        printf("Status Register: Content: %d\n", SREG.content);
-    } else {
-        for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++) {
-            if (index == i) {
-                printf("GP Register %d: Content: %d\n", i, GPRS[i].content);
-                return;
-            }
-        }
-        printf("Register with index %d not found.\n", index);
+    if (index < 0 || index >= NUMBER_OF_GP_REGISTERS) {
+        printf("Register index %d out of range.\n", index);
+        return;
     }
+    printf("R%d = %d\n", index, GPRS[index].content);
 }
 
-#pragma endregion
+void dump_all_registers(void) {
+    printf("=== Final Register State ===\n");
+    for (int i = 0; i < NUMBER_OF_GP_REGISTERS; i++)
+        printf("R%-2d = %d\n", i, GPRS[i].content);
+    printf("PC   = %d\n", get_pc());
+    printf("SREG = 0x%02X (C=%d, V=%d, N=%d, S=%d, Z=%d)\n",
+           get_sreg_full(),
+           get_flag(C_FLAG), get_flag(V_FLAG),
+           get_flag(N_FLAG), get_flag(S_FLAG), get_flag(Z_FLAG));
+}
