@@ -1,4 +1,4 @@
-#include "constants.h"
+#include "types.h"
 #include "stdint.h"
 
-uint8_t data_memory[DATA_MEMORY_SIZE];
+int8_t data_memory[DATA_MEMORY_SIZE];
