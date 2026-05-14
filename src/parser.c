@@ -1,17 +1,17 @@
 #include "../include/include.h"
 
 int8_t getOpcode(string str) {
-    if (strcpm(str, "ADD") == 0) return ADD;
-    if (strcpm(str, "SUB") == 0) return SUB;
-    if (strcpm(str, "MUL") == 0) return MUL;
-    if (strcpm(str, "LDI") == 0) return LDI;
-    if (strcpm(str, "BEQZ") == 0) return BEQZ;
-    if (strcpm(str, "AND") == 0) return AND;
-    if (strcpm(str, "OR") == 0) return OR;
-    if (strcpm(str, "JR") == 0) return JR;
-    if (strcpm(str, "SAL") == 0) return SAL;
-    if (strcpm(str, "SAR") == 0) return SAR;
-    if (strcpm(str, "LB") == 0) return LB;
+    if (strcmp(str, "ADD") == 0) return ADD;
+    if (strcmp(str, "SUB") == 0) return SUB;
+    if (strcmp(str, "MUL") == 0) return MUL;
+    if (strcmp(str, "LDI") == 0) return LDI;
+    if (strcmp(str, "BEQZ") == 0) return BEQZ;
+    if (strcmp(str, "AND") == 0) return AND;
+    if (strcmp(str, "OR") == 0) return OR;
+    if (strcmp(str, "JR") == 0) return JR;
+    if (strcmp(str, "SAL") == 0) return SAL;
+    if (strcmp(str, "SAR") == 0) return SAR;
+    if (strcmp(str, "LB") == 0) return LB;
     return SB;
 }
 
@@ -30,7 +30,7 @@ void readProgram(string filename) {
     char dir[64];
     sprintf(dir, "../programs/%s", filename);
 
-    FILE* f = fopen(dir, 'r');
+    FILE* f = fopen(dir, "r");
     
     if (f == NULL) {
         printf("Cannot open file!");

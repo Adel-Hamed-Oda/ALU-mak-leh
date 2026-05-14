@@ -19,3 +19,5 @@ int main() {
         }
     }
 }
+
+// gcc Controller.c data_memory.c executer.c instruction_memory.c methods.c parser.c -o meow.exe

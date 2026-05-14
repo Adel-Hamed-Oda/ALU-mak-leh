@@ -17,9 +17,9 @@ void decode() {
     opcode = current_instruction >> 12;
 
     R1 = current_instruction >> 6;
-    R1 &= ((1 << 7) - 1);
+    R1 &= ((1 << 6) - 1);
 
-    R2_imm = current_instruction & ((1 << 7) - 1);
+    R2_imm = current_instruction & ((1 << 6) - 1);
 }
 
 void execute() {
