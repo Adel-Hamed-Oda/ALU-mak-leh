@@ -103,4 +103,6 @@ void execute() {
 void flush() {
     current_instruction = -1;
     opcode = MEOW;
+
+    printf("[Cycle: %i]: FLUSH CALLED, IF and ID have been set to NULL\n", clk);
 }
