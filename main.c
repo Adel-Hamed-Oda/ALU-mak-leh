@@ -92,10 +92,14 @@ static void do_decode(void) {
                    dest);
             printf("    Action: bubble inserted into EX; instruction will retry next cycle\n");
 
-            /* Insert bubble, re-present stalled instruction, undo PC increment */
+            /* Insert bubble, re-present stalled instruction, undo PC increment.
+             * Only decrement PC if fetch actually incremented it this cycle
+             * (i.e. fetch put a real instruction, not a bubble). */
+            int fetch_was_valid = if_id.valid;
             pipeline_flush_id_ex();
-            if_id    = old_if_id;
-            set_pc(get_pc() - 1);
+            if_id = old_if_id;
+            if (fetch_was_valid)
+                set_pc(get_pc() - 1);
             return;
         }
     }
