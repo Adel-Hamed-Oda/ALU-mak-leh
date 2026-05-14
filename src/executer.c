@@ -6,10 +6,21 @@ extern int8_t R1;
 extern int8_t R2_imm;
 extern int clk;
 
+void to_bin(int16_t x) {
+    for (int i = 15; i >= 0; i--) {
+        int bit = (x >> i) & 1;
+        printf("%i", bit);
+    }
+    printf("\n");
+}
+
 void fetch() {
-    printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS %i\n", clk, PC);
+    printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS: %i\n", clk, PC); 
+
     current_instruction = instruction_memory[PC++];
-    printf("[Cycle: %i]: INSTRUCTION =  %x\n", clk, current_instruction);
+    printf("[Cycle: %i]: INSTRUCTION = ", clk, current_instruction);
+    to_bin(current_instruction);
+
 }
 
 void decode() {
