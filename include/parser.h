@@ -1,5 +1,3 @@
-#include "include.h"
-
 /*
     given the name of the program
     read the instructions line by line

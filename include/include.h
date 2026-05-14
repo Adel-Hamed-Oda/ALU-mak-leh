@@ -5,4 +5,5 @@
 #include "registers.h"
 #include "types.h"
 #include "Controller.h"
-
+#include "string.h"
+#include "stdlib.h"
