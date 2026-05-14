@@ -15,16 +15,10 @@ void fetch();
 void decode();
 
 /*
-    given the opcode and following registers
-    execute the instruction
-*/
-void execute_R(int opcode, int R1, int R2);
-
-/*
     given the opcode and register and immediate
     execute the instruction
 */
-void execute_I(int opcode, int R1, int imm);
+void execute(int opcode, int R1, int imm);
 
 
 
