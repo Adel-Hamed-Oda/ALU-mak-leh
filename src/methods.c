@@ -6,7 +6,6 @@ extern int8_t opcode;
 extern int8_t R1;
 extern int8_t R2_imm;
 
-
 void add(){
     GPRS[R1] += GPRS[R2_imm];
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #define INSTRUCTION_MEMORY_SIZE 1024
 #define DATA_MEMORY_SIZE 2048
 #define GPRS_NUM 64

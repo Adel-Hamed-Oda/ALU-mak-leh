@@ -1,4 +1,6 @@
-#include "include.h"
+#include "../include/include.h"
+
+int8_t data_memory[DATA_MEMORY_SIZE] = {0};
 
 int8_t get_data(int i) {
     return data_memory[i];

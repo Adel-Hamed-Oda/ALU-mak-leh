@@ -1,6 +1,7 @@
-#include "include.h"
+#include "../include/include.h"
 
-cur = 0;
+int cur = 0;
+int16_t instruction_memory[INSTRUCTION_MEMORY_SIZE] = {0};
 
 int16_t get_instr(int i) {
     return instruction_memory[i];
