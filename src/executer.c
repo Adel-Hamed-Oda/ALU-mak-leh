@@ -9,6 +9,7 @@ extern int clk;
 void fetch() {
     printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS %i\n", clk, PC);
     current_instruction = instruction_memory[PC++];
+    printf("[Cycle: %i]: INSTRUCTION =  %x\n", clk, current_instruction);
 }
 
 void decode() {
@@ -23,6 +24,10 @@ void decode() {
     R1 &= ((1 << 6) - 1);
 
     R2_imm = current_instruction & ((1 << 6) - 1);
+
+    printf("[Cycle: %i]: OPCODE = %i\n", clk, opcode);
+    printf("[Cycle: %i]: R1 = %i\n", clk, R1);
+    printf("[Cycle: %i]: R1/imm = %i\n", clk, R2_imm);
 }
 
 void execute() {
