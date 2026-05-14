@@ -12,20 +12,24 @@ int8_t R2_imm = 0;
 int clk = 0;
 
 int main() {
-    readProgram("program.txt");
+    readProgram("program_1.txt");
     clk = 0;
 
     while (get_instr(PC) != 0xFF) {
         execute();
 
         if (opcode == BEQZ || opcode == JR) {
+            printf("Press [ENTER] to go to the next clk cycle\n");
+            getchar();
             clk++;
         }
 
         decode();
         fetch();
 
-        if (opcode != BEQZ && opcode != JR) {
+        if ((opcode != BEQZ && opcode != JR) || opcode == MEOW) {
+            printf("Press [ENTER] to go to the next clk cycle\n");
+            getchar();
             clk++;
         }
     }

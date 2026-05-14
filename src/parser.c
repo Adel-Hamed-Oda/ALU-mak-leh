@@ -33,7 +33,7 @@ void readProgram(string filename) {
     FILE* f = fopen(dir, "r");
     
     if (f == NULL) {
-        printf("Cannot open file!");
+        printf("[ERROR] Cannot open file!\n");
         return;
     }
 
