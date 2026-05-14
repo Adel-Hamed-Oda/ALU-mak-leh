@@ -14,7 +14,8 @@ enum OPCODE {
     SAL,                            // 1000
     SAR,                            // 1001
     LB,                             // 1010
-    SB                              // 1011
+    SB,                             // 1011
+    MEOW                            // 1110  
 };
 
 typedef char* string;

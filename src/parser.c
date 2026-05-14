@@ -1,4 +1,4 @@
-#include "include.h"
+#include "../include/include.h"
 
 int8_t getOpcode(string str) {
     if (strcpm(str, "ADD") == 0) return ADD;
@@ -27,7 +27,7 @@ int8_t getR2_imm(string str) {
 }
 
 void readProgram(string filename) {
-    string dir = char[64];
+    char dir[64];
     sprintf(dir, "../programs/%s", filename);
 
     FILE* f = fopen(dir, 'r');
@@ -41,7 +41,7 @@ void readProgram(string filename) {
 
     while (fgets(line, sizeof(line), f) != NULL) {
         char _opcode[20], _R1[20], _R2_imm[20];
-        sscanf(line, "%s %s %s", w1, w2, w3);
+        sscanf(line, "%s %s %s", _opcode, _R1, _R2_imm);
 
         int8_t opcode = getOpcode(_opcode);
         int8_t R1 = getR1(_R1);

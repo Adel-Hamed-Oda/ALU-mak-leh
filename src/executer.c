@@ -10,6 +10,10 @@ void fetch() {
 }
 
 void decode() {
+    if (current_instruction == -1) {
+        return;
+    }
+    
     opcode = current_instruction >> 12;
 
     R1 = current_instruction >> 6;
@@ -19,6 +23,10 @@ void decode() {
 }
 
 void execute() {
+    if (opcode == MEOW) {
+        return;
+    }
+
     switch(opcode) {
         case ADD: {
             add();
@@ -74,4 +82,5 @@ void execute() {
 
 void flush() {
     current_instruction = -1;
+    opcode = MEOW;
 }

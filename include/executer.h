@@ -18,7 +18,7 @@ void decode();
     given the opcode and register and immediate
     execute the instruction
 */
-void execute(int opcode, int R1, int imm);
+void execute();
 
 
 
