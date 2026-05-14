@@ -15,6 +15,11 @@ void to_bin(int16_t x) {
 }
 
 void fetch() {
+    if (get_instr(PC) == 0xFF) {
+        current_instruction = -1;
+        return;
+    }
+
     printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS: %i\n", clk, PC); 
 
     current_instruction = instruction_memory[PC++];
@@ -25,6 +30,8 @@ void fetch() {
 
 void decode() {
     if (current_instruction == -1) {
+        opcode = MEOW;
+        R1 = R2_imm = -1;
         return;
     }
 

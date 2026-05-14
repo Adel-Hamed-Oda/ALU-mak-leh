@@ -15,7 +15,7 @@ int main() {
     readProgram("program_1.txt");
     clk = 0;
 
-    while (get_instr(PC) != 0xFF) {
+    while (true) {
         int8_t cur_opcode = opcode;
         execute();
 
@@ -31,7 +31,13 @@ int main() {
         printf("Press [ENTER] to go to the next clk cycle\n");
         getchar();
         clk++;
+
+        if (get_instr(PC) == 0xFF && opcode == MEOW && current_instruction == -1) {
+            break;
+        }
     }
+
+    printf("[Cycle: %i]: PROGRAM FINISHED EXECUTNG\n", clk);
 }
 
 /*
