@@ -21,7 +21,7 @@ void ldi(){
 void beqz(){
     if(GPRS[R1] == 0){
         flush();
-        PC += R2_imm;
+        PC += R2_imm - 1;
     }
 }
 void and(){

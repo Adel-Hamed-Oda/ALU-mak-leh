@@ -16,9 +16,10 @@ int main() {
     clk = 0;
 
     while (get_instr(PC) != 0xFF) {
+        int8_t cur_opcode = opcode;
         execute();
 
-        if (opcode == BEQZ || opcode == JR) {
+        if (cur_opcode == BEQZ || cur_opcode == JR) {
             printf("Press [ENTER] to go to the next clk cycle\n");
             getchar();
             clk++;
@@ -27,11 +28,9 @@ int main() {
         decode();
         fetch();
 
-        if ((opcode != BEQZ && opcode != JR) || opcode == MEOW) {
-            printf("Press [ENTER] to go to the next clk cycle\n");
-            getchar();
-            clk++;
-        }
+        printf("Press [ENTER] to go to the next clk cycle\n");
+        getchar();
+        clk++;
     }
 }
 
