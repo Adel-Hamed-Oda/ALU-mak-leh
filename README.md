@@ -35,52 +35,52 @@ Also I know the program manager is way too complicated since there should only b
 Every .h file shouldn't include anything, unless we would add something extra ourselves like uint8_t which would require importing certain libraries
 
 you should type
-```c
-make
+```powershell
+mingw32-make
 ```
 in the terminal to compile, and then type 
-```c
-./CA_backend.exe
+```powershell
+.\CA_backend.exe
 ```
 to run the program itself, the make program works by itself _(mahadesh yetfazlek w yghayyar fel Makefile, ha2telo)_
 
 ## How to Run
 
 ### 1. Build the project
-```bash
-make
+```powershell
+mingw32-make
 ```
 
 ### 2. Run with the default test program
-```bash
-./CA_backend.exe
+```powershell
+.\CA_backend.exe
 ```
 This runs `programs/test0.txt` by default.
 
 ### 3. Run with a custom assembly file
-```bash
-./CA_backend.exe programs/your_program.txt
+```powershell
+.\CA_backend.exe programs/your_program.txt
 ```
 
 ### 4. Save output to a text file
-```bash
-./CA_backend.exe > output.txt
+```powershell
+.\CA_backend.exe | Out-File output.txt
 ```
 Results are saved to `output.txt` in the same folder.
 
 ### 5. Run a custom file and save output
-```bash
-./CA_backend.exe programs/your_program.txt > output.txt
+```powershell
+.\CA_backend.exe programs/your_program.txt | Out-File output.txt
 ```
 
 ### 6. Save output and still see it in the terminal at the same time
-```bash
-./CA_backend.exe | tee output.txt
+```powershell
+.\CA_backend.exe | Tee-Object output.txt
 ```
 
 ### Clean build files
-```bash
-make clean
+```powershell
+mingw32-make clean
 ```
 
 Any function that should return errors should use the definitions in "errors.h", this would help in modularity and would make it easier to check from something like
