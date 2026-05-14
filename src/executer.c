@@ -19,7 +19,56 @@ void decode() {
 }
 
 void execute() {
-    
+    switch(opcode) {
+        case ADD: {
+            add();
+            break;
+        }
+        case SUB: {
+            sub();
+            break;
+        }
+        case MUL: {
+            mul();
+            break;
+        }
+        case LDI: {
+            ldi();
+            break;
+        }
+        case BEQZ: {
+            beqz();
+            break;
+        }
+        case AND: {
+            and();
+            break;
+        }
+        case OR: {
+            or();
+            break;
+        }
+        case JR: {
+            jr();
+            break;
+        }
+        case SAL: {
+            sal();
+            break;
+        }
+        case SAR: {
+            sar();
+            break;
+        }
+        case LB: {
+            lb();
+            break;
+        }
+        case SB: {
+            sb();
+            break;
+        }
+    }
 }
 
 
