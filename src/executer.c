@@ -4,6 +4,7 @@ extern int16_t current_instruction;
 extern int8_t opcode;
 extern int8_t R1;
 extern int8_t R2_imm;
+extern int8_t SREG;
 extern int clk;
 
 void to_bin(int16_t x) {
@@ -49,6 +50,8 @@ void decode() {
 }
 
 void execute() {
+    SREG = 0;
+
     if (opcode == MEOW) {
         return;
     }
