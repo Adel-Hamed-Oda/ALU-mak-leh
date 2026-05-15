@@ -68,6 +68,10 @@ else{
     SREG&=(~(1<<0));
 }
 
+printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+printf("Status Register -> " );
+to_bin(SREG,8);
+
 }
 
 void sub(){
@@ -127,6 +131,9 @@ else{
 /*
     Need to store result in a REGISTER!!
 */
+printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+printf("Status Register -> " );
+to_bin(SREG,8);
 }
 
 void mul(){
@@ -153,10 +160,15 @@ void mul(){
     else{
         SREG&=(~(1<<0));
     }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Status Register -> " );
+    to_bin(SREG,8);
 }
 
 void ldi(){
-    GPRS[R1]=R2_imm;
+    int bit = (R2_imm>>5)&1;
+    GPRS[R1] |= ((1 << 6) + (1 << 7)) * bit;
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
 }
 
 void beqz(){
@@ -164,6 +176,8 @@ void beqz(){
         flush();
         PC=PC+R2_imm-1;
     }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Value of PC -> %d\n", PC);
 }
 
 void and(){
@@ -190,6 +204,9 @@ void and(){
     else{
         SREG&=(~(1<<0));
     }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Status Register -> " );
+    to_bin(SREG,8);
 }
 
 void or(){
@@ -215,12 +232,16 @@ void or(){
     else{
         SREG&=(~(1<<0));
     }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Status Register -> " );
+    to_bin(SREG,8); 
 }
 
 void jr(){
     int AND = 0b111111;
     PC = ((R1 & AND) << 6) | (R2_imm & AND);
     flush();
+    printf("Value of PC -> %d\n", PC);
 }
 
 void sal(){
@@ -245,6 +266,9 @@ void sal(){
         else{
             SREG&=(~(1<<0));
         }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Status Register -> " );
+    to_bin(SREG,8);
 }
 
 void sar(){
@@ -269,12 +293,17 @@ void sar(){
         else{
             SREG&=(~(1<<0));
         }
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
+    printf("Status Register -> " );
+    to_bin(SREG,8);
 }
 
 void lb(){
     GPRS[R1] = get_data(R2_imm);
+    printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
 }
 
 void sb(){
     set_data(R2_imm, GPRS[R1]);
+    printf("Value of Memory at Address %d -> %d\n", R2_imm, GPRS[R1]);
 }
