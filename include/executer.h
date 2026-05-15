@@ -4,6 +4,12 @@
 #include "stdint.h"
 
 /*
+    Convert a number to binary and print it
+*/
+
+void to_bin(int16_t x, int bits);
+
+/*
     get the current instruction the PC is pointing at and store it into current_instruction
 */
 void fetch();
