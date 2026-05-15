@@ -1,95 +1,280 @@
 #include "../include/include.h"
 
-extern int8_t GPRS[GPRS_NUM];
-extern int8_t SREG;
-extern OPCODE opcode;
-extern int8_t R1;
-extern int8_t R2_imm;
-
 void add(){
-    GPRS[R1] += GPRS[R2_imm];
-    printf("[Cycle: %i]: ADD INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    int NegativeFlag=0;
+    int OverflowFlag=0;
+    int original8thBitR1=(GPRS[R1]>>7);
+    int original8thBitR2=(GPRS[R2_imm]>>7);
+    int answer=GPRS[R1]+GPRS[R2_imm];
+    GPRS[R1] = (int8_t) answer;
+    /*
+        Check for carry
+    */
+    int carryCheck=(answer&0x100)>>8;
+    if(carryCheck==1){
+        SREG|=(1<<4);
+    }
+    else{
+        SREG&=(~(1<<4));
+    }
+
+    int result8thBit=answer>>7;
+
+/*
+    Check for overflow
+*/
+if (original8thBitR1==original8thBitR2) {
+    if (result8thBit==original8thBitR1) {
+        SREG&=~(1<<3);
+        OverflowFlag=0;
+    } else {
+        SREG|=(1<<3);
+        OverflowFlag=1;
+    }
+} else {
+    SREG&=~(1<<3);
+    OverflowFlag=0;
+}
+
+/*
+    Check for negative result
+*/
+if(result8thBit==1){
+    SREG|=(1<<2);
+    NegativeFlag=1;
+}
+else{
+    SREG&=(~(1<<2));
+    NegativeFlag=0;
+}
+/*
+    Check for Sign Bit
+*/
+if(OverflowFlag^NegativeFlag==1){
+    SREG|=(1<<1);
+}
+else{
+    SREG&=(~(1<<1));
+}
+
+/*
+    Check for Zero Flag
+*/
+if(GPRS[R1]==0)
+{
+    SREG|=(1<<0);
+}
+else{
+    SREG&=(~(1<<0));
+}
+
 }
 
 void sub(){
-    GPRS[R1] -= GPRS[R2_imm];
-    printf("[Cycle: %i]: SUB INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    int NegativeFlag=0;
+    int OverflowFlag=0;
+    int original8thBitR1=(GPRS[R1]>>7);
+    int original8thBitR2=(GPRS[R2_imm]>>7);
+    int answer=GPRS[R1]-GPRS[R2_imm];
+    GPRS[R1] = (int8_t) answer;
+    /*
+        Check for overflow
+    */
+    int result8thBit=GPRS[R1]>>7;
+if (original8thBitR1!=original8thBitR2) {
+    if (result8thBit!=original8thBitR2) {
+        SREG&=~(1<<3);
+        OverflowFlag=0;
+    } else {
+        SREG|=(1<<3);
+        OverflowFlag=1;
+    }
+} else {
+    SREG&=~(1<<3);
+    OverflowFlag=0;
+}
+    /*
+    Check for negative result
+*/
+    if(result8thBit==1){
+        SREG|=(1<<2);
+        NegativeFlag=1;
+    }
+    else{
+        SREG&=(~(1<<2));
+        NegativeFlag=0;
+    }
+/*
+     Check for Sign Bit
+*/
+if(OverflowFlag^NegativeFlag==1){
+    SREG|=(1<<1);
+}
+else{
+    SREG&=(~(1<<1));
+}
+
+/*
+    Check for Zero Flag
+*/
+if(GPRS[R1]==0)
+{
+    SREG|=(1<<0);
+}
+else{
+    SREG&=(~(1<<0));
+}
+/*
+    Need to store result in a REGISTER!!
+*/
 }
 
 void mul(){
-    GPRS[R1] *= GPRS[R2_imm];
-    printf("[Cycle: %i]: MUL INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    int answer=GPRS[R1]*GPRS[R2_imm];
+    GPRS[R1] = (int8_t) answer;
+    /*
+        Update Negative Flag
+    */
+   int result8thBit=GPRS[R1]>>7;
+   if(result8thBit==1){
+        SREG|=(1<<2);
+    }
+    else{
+        SREG&=(~(1<<2));
+    }
+    /*
+        Check for Zero Flag
+    */
+   int zerocheck=GPRS[R1];
+    if(zerocheck==0)
+    {
+        SREG|=(1<<0);
+    }
+    else{
+        SREG&=(~(1<<0));
+    }
 }
 
 void ldi(){
-    int bit = (R2_imm >> 5) & 1;
-    R2_imm |= ((1 << 7) + (1 << 6)) * bit;
-
-    GPRS[R1] = R2_imm;
-    printf("[Cycle: %i]: LDI INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    GPRS[R1]=R2_imm;
 }
 
 void beqz(){
-    int bit = (R2_imm >> 5) & 1;
-    R2_imm |= ((1 << 7) + (1 << 6)) * bit;
-
-    if(GPRS[R1] == 0){
+    if(GPRS[R1]==0){
         flush();
-        PC += R2_imm - 1;
-        printf("[Cycle: %i]: BRANCH EXECUTED, PC is now %i\n", clk, PC);
-    } else {
-        printf("[Cycle: %i]: R1 is not 0, DID NOT BRANCH\n", clk);
+        PC=PC+R2_imm-1;
     }
 }
 
 void and(){
-    GPRS[R1] &= GPRS[R2_imm];
-    printf("[Cycle: %i]: AND INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    int answer=GPRS[R1]&GPRS[R2_imm];
+    GPRS[R1] = (int8_t) answer;
+    /*
+        Update Negative Flag
+    */
+   int result8thBit=GPRS[R1]>>7;
+   if(result8thBit==1){
+        SREG|=(1<<2);
+    }
+    else{
+        SREG&=(~(1<<2));
+    }
+    /*
+        Check for Zero Flag
+    */
+   int zerocheck=GPRS[R1];
+    if(zerocheck==0)
+    {
+        SREG|=(1<<0);
+    }
+    else{
+        SREG&=(~(1<<0));
+    }
 }
 
 void or(){
-    GPRS[R1] |= GPRS[R2_imm];
-    printf("[Cycle: %i]: OR INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+    int answer=GPRS[R1]|GPRS[R2_imm];
+    GPRS[R1] = (int8_t) answer;
+    /*
+        Update Negative Flag
+    */
+   int result8thBit=GPRS[R1]>>7;
+   if(result8thBit==1){
+        SREG|=(1<<2);
+    }
+    else{
+        SREG&=(~(1<<2));
+    }
+    /*
+        Check for Zero Flag
+    */
+    if(GPRS[R1]==0)
+    {
+        SREG|=(1<<0);
+    }
+    else{
+        SREG&=(~(1<<0));
+    }
 }
 
 void jr(){
-    PC = (R1 << 6) | (R2_imm);
-    printf("[Cycle: %i]: JR EXECUTED, PC is now %i\n", clk, PC);
+    int AND = 0b111111;
+    PC = ((R1 & AND) << 6) | (R2_imm & AND);
     flush();
 }
 
 void sal(){
-    GPRS[R1] <<= ((uint8_t)R2_imm); 
-    printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, ((uint8_t)R2_imm), GPRS[R1]);
+    GPRS[R1]=GPRS[R1]<<R2_imm;
+    /*
+        Update Negative Flag
+    */
+    int result8thBit=GPRS[R1]>>7;
+    if(result8thBit==1){
+          SREG|=(1<<2);
+     }
+     else{
+          SREG&=(~(1<<2));
+     }
+        /*
+            Check for Zero Flag
+        */
+        if(GPRS[R1]==0)
+        {
+            SREG|=(1<<0);
+        }
+        else{
+            SREG&=(~(1<<0));
+        }
 }
 
 void sar(){
-    GPRS[R1] >>= ((uint8_t)R2_imm); 
-    printf("[Cycle: %i]: SAR INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, ((uint8_t)R2_imm), GPRS[R1]);
+    GPRS[R1] >>= R2_imm;
+    /*
+        Update Negative Flag
+    */
+    int result8thBit=GPRS[R1]>>7;
+    if(result8thBit==1){
+          SREG|=(1<<2);
+     }
+     else{
+          SREG&=(~(1<<2));
+     }
+        /*
+            Check for Zero Flag
+        */
+        if(GPRS[R1]==0)
+        {
+            SREG|=(1<<0);
+        }
+        else{
+            SREG&=(~(1<<0));
+        }
 }
 
 void lb(){
-    int bit = (R2_imm >> 5) & 1;
-    R2_imm |= ((1 << 7) + (1 << 6)) * bit;
-
-    if (R2_imm < 0) {
-        printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
-        return;
-    }
-
     GPRS[R1] = get_data(R2_imm);
-    printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
 }
 
 void sb(){
-    int bit = (R2_imm >> 5) & 1;
-    R2_imm |= ((1 << 7) + (1 << 6)) * bit;
-
-    if (R2_imm < 0) {
-        printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
-        return;
-    }
-
     set_data(R2_imm, GPRS[R1]);
-    printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, Mem[%i] is now %i\n", clk, R2_imm, GPRS[R1]);
 }
