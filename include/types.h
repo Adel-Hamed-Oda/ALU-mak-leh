@@ -4,7 +4,7 @@
 #define DATA_MEMORY_SIZE 2048
 #define GPRS_NUM 64
 
-enum OPCODE {
+typedef enum {
     ADD,                            // 0000
     SUB,                            // 0001
     MUL,                            // 0010
@@ -18,6 +18,6 @@ enum OPCODE {
     LB,                             // 1010
     SB,                             // 1011
     MEOW                            // 1110  
-};
+} OPCODE;
 
 typedef char* string;

@@ -1,6 +1,6 @@
 #include "../include/include.h"
 
-int8_t getOpcode(string str) {
+OPCODE getOpcode(string str) {
     if (strcmp(str, "ADD") == 0) return ADD;
     if (strcmp(str, "SUB") == 0) return SUB;
     if (strcmp(str, "MUL") == 0) return MUL;
@@ -43,11 +43,13 @@ void readProgram(string filename) {
         char _opcode[20], _R1[20], _R2_imm[20];
         sscanf(line, "%s %s %s", _opcode, _R1, _R2_imm);
 
-        int8_t opcode = getOpcode(_opcode);
+        OPCODE opcode = getOpcode(_opcode);
         int8_t R1 = getR1(_R1);
         int8_t R2_imm = getR2_imm(_R2_imm);
 
-        int16_t instruction = (opcode << 12) + (R1 << 6) + R2_imm;
+        int8_t AND = (1 << 6) - 1;
+
+        int16_t instruction = ((opcode & AND) << 12) + ((R1 & AND) << 6) + (R2_imm & AND);
 
         push_back_instr(instruction);
     }

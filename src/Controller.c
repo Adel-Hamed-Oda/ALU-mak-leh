@@ -5,7 +5,7 @@ int8_t SREG = 0;
 int16_t PC = 0;
 
 int16_t current_instruction = -1;
-int8_t opcode = MEOW;
+OPCODE opcode = MEOW;
 int8_t R1 = 0;
 int8_t R2_imm = 0;
 
@@ -16,7 +16,7 @@ int main() {
     clk = 0;
 
     while (true) {
-        int8_t cur_opcode = opcode;
+        OPCODE cur_opcode = opcode;
         execute();
 
         if (cur_opcode == BEQZ || cur_opcode == JR) {

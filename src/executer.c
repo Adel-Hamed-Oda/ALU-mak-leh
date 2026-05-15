@@ -1,14 +1,14 @@
 #include "../include/include.h"
 
 extern int16_t current_instruction;
-extern int8_t opcode;
+extern OPCODE opcode;
 extern int8_t R1;
 extern int8_t R2_imm;
 extern int8_t SREG;
 extern int clk;
 
-void to_bin(int16_t x) {
-    for (int i = 15; i >= 0; i--) {
+void to_bin(int16_t x, int bits) {
+    for (int i = bits - 1; i >= 0; i--) {
         int bit = (x >> i) & 1;
         printf("%i", bit);
     }
@@ -25,7 +25,7 @@ void fetch() {
 
     current_instruction = instruction_memory[PC++];
     printf("[Cycle: %i]: INSTRUCTION = ", clk, current_instruction);
-    to_bin(current_instruction);
+    to_bin(current_instruction, 16);
 
 }
 
@@ -37,7 +37,7 @@ void decode() {
     }
 
     printf("[Cycle: %i]: DECODING THE CURRENT INSTRUCTION\n", clk);
-    opcode = current_instruction >> 12;
+    opcode = ((uint16_t)current_instruction >> 12);
 
     R1 = current_instruction >> 6;
     R1 &= ((1 << 6) - 1);
@@ -46,7 +46,9 @@ void decode() {
 
     printf("[Cycle: %i]: OPCODE = %i\n", clk, opcode);
     printf("[Cycle: %i]: R1 = %i\n", clk, R1);
-    printf("[Cycle: %i]: R1/imm = %i\n", clk, R2_imm);
+
+    printf("[Cycle: %i]: R2/imm = ", clk);
+    to_bin(R2_imm, 6);
 }
 
 void execute() {
