@@ -8,13 +8,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="simulator-toolbar" aria-label="Simulator controls">
+        <button type="button" onclick="fetch('/run', { method: 'POST' })">Run</button>
+        <button type="button" onclick="fetch('/pause', { method: 'POST' })">Pause</button>
+        <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
+        <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
+        <button type="button" onclick="fetch('/load', { method: 'POST' })">Load Program</button>
+    </header>
+
     <div class="memory-panels-wrapper">
-        <aside id="instruction-memory" class="memory-panel" aria-label="Instruction Memory">
-            <!-- JS inserts instruction memory here -->
+        <aside class="memory-panel" aria-labelledby="instruction-memory-title">
+            <h2 id="instruction-memory-title" class="memory-title">Instruction Memory</h2>
+            <div id="instruction-memory" class="memory-list">
+                <!-- JS inserts instruction memory here -->
+            </div>
         </aside>
 
-        <aside id="data-memory" class="memory-panel" aria-label="Data Memory">
-            <!-- JS inserts data memory here -->
+        <aside class="memory-panel" aria-labelledby="data-memory-title">
+            <h2 id="data-memory-title" class="memory-title">Data Memory</h2>
+            <div id="data-memory" class="memory-list">
+                <!-- JS inserts data memory here -->
+            </div>
         </aside>
     </div>
 
