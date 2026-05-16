@@ -1,10 +1,18 @@
 #include "../include/include.h"
 
+void set(int b) {
+    SREG |= (1 << b);
+}
+void reset(int b) {
+    SREG &= ~(1 << b);
+}
+
 void add(){
     int NegativeFlag=0;
     int OverflowFlag=0;
     int original8thBitR1=(GPRS[R1]>>7);
     int original8thBitR2=(GPRS[R2_imm]>>7);
+
     int answer=GPRS[R1]+GPRS[R2_imm];
     GPRS[R1] = (int8_t) answer;
     /*
@@ -166,8 +174,11 @@ void mul(){
 }
 
 void ldi(){
-    int bit = (R2_imm>>5)&1;
+    GPRS[R1] = R2_imm;
+
+    int bit = (R2_imm >> 5) & 1;
     GPRS[R1] |= ((1 << 6) + (1 << 7)) * bit;
+    
     printf("Value of Register %d -> %d\n",R1, GPRS[R1]);
 }
 

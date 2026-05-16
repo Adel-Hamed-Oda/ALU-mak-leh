@@ -1,2 +1,20 @@
-.vscode
+.vscode/
 *.exe
+
+# build files
+*.o
+*.out
+*.obj
+
+# logs
+*.log
+
+# temporary files
+*.tmp
+
+# node
+node_modules/
+
+# python cache
+__pycache__/
+*.pyc
