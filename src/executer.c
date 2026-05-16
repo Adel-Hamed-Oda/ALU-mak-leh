@@ -16,7 +16,7 @@ void to_bin(int16_t x, int bits) {
 }
 
 void fetch() {
-    if (get_instr(PC) == 0xFF) {
+    if (get_instr(PC) == -1) {
         current_instruction = -1;
         return;
     }

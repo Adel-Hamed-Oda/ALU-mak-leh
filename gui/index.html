@@ -12,10 +12,11 @@
             MeowArch Simulator
         </div>
         <div class="toolbar-actions">
-            <button type="button" id="load-program-button">Load Program</button>
-            <button type="button" id="step-button">Step</button>
-            <button type="button" id="run-button">Run</button>
-            <button type="button" id="reset-button">Reset</button>
+            <button type="button" onclick="fetch('/run', { method: 'POST' })">Run</button>
+            <button type="button" onclick="fetch('/pause', { method: 'POST' })">Pause</button>
+            <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
+            <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
+            <button type="button" onclick="fetch('/load', { method: 'POST' })">Load Program</button>
         </div>
     </div>
 

@@ -41,7 +41,7 @@ int main() {
     write_everything_to_json();
 
     while (true) {
-        if (get_instr(PC) == 0xFFFF && opcode == MEOW && current_instruction == -1) {
+        if (get_instr(PC) == -1 && opcode == MEOW && current_instruction == -1) {
             break;
         }
         handleClkCycle();

@@ -209,7 +209,8 @@ button:active {
 }
 
 #pipeline-table + .pipeline-title {
-    margin-top: 24px !important;
+    margin-top: 8px !important;
+    margin-bottom: 6px;
 }
 
 #instruction-memory,
