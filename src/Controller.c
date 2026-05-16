@@ -77,7 +77,6 @@ int main(int argc, void* argv) {
         handleClkCycle();
     }
 
-    write_everything_to_json();
     printf("[Cycle: %i]: PROGRAM FINISHED EXECUTNG\n", clk);
 }
 
