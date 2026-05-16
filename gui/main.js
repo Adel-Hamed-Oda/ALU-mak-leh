@@ -1,7 +1,9 @@
 async function fetchState() {
-    const res = await fetch("./data.json");
+    const res = await fetch(`./data.json?t=${Date.now()}`);
     return await res.json();
 }
+
+const pipelineRows = [];
 
 function renderMemory(containerId, memory, formatValue = String) {
     const container = document.getElementById(containerId);
@@ -33,11 +35,19 @@ function renderMemory(containerId, memory, formatValue = String) {
     });
 }
 
+
 async function updateUI() {
-    const state = await fetchState();
+    let state;
+
+    try {
+        state = await fetchState();
+    } catch (error) {
+        return;
+    }
 
     renderMemory("instruction-memory", state.instruction_memory, decodeInstruction);
     renderMemory("data-memory", state.data_memory);
+    updatePipeline(state);
 }
-
 updateUI();
+setInterval(updateUI, 500);

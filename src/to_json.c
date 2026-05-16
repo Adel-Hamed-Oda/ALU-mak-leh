@@ -57,6 +57,10 @@ void write_clk_PC() {
     fprintf(json_file, "%i,\n    \"PC\": %i", clk, (int)PC);
 }
 
+void write_current_instruction() {
+    fprintf(json_file, "%i", current_instruction);
+}
+
 void write_everything_to_json() {
     json_file = open_data_json();
 
@@ -79,6 +83,10 @@ void write_everything_to_json() {
 
     fprintf(json_file, "    \"registers\": ");
     write_registers();
+    fprintf(json_file, ",\n");
+
+    fprintf(json_file, "    \"current_instruction\": ");
+    write_current_instruction();
     fprintf(json_file, ",\n");
 
     fprintf(json_file, "    \"clk\": ");

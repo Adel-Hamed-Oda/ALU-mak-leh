@@ -78,7 +78,7 @@ body {
     flex: 1 1 auto;
     min-height: 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     overflow: hidden;
 }
 
@@ -98,6 +98,136 @@ body {
 
 .memory-panel::-webkit-scrollbar {
     display: none;
+}
+
+.pipeline-panel {
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    max-width: none;
+    padding: 12px;
+    flex: 1 1 560px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--panel-bg);
+    border-left: 1px solid var(--panel-border);
+}
+
+.pipeline-title {
+    min-height: 42px;
+    margin: 0 0 10px;
+    padding: 0 12px;
+    border: 1px solid var(--cell-border);
+    border-radius: 6px;
+    background: var(--cell-bg);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+#pipeline-table {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border: 1px solid var(--cell-border);
+    border-radius: 8px;
+    background: #0f1724;
+}
+
+#pipeline-table::-webkit-scrollbar {
+    display: none;
+}
+
+.pipeline-grid {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    table-layout: fixed;
+    padding: 0 10px 10px;
+    font-size: 12px;
+}
+
+.pipeline-grid th,
+.pipeline-grid td {
+    padding: 10px;
+    color: var(--text-primary);
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.pipeline-grid th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #0f1724;
+    border-bottom: 1px solid var(--panel-border);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.pipeline-grid th:first-child,
+.pipeline-grid td:first-child {
+    width: 72px;
+}
+
+.pipeline-grid tbody td {
+    background: var(--cell-bg);
+    border-top: 1px solid var(--cell-border);
+    border-bottom: 1px solid var(--cell-border);
+}
+
+.pipeline-grid tbody td:first-child {
+    border-left: 1px solid var(--cell-border);
+    border-radius: 6px 0 0 6px;
+}
+
+.pipeline-grid tbody td:last-child {
+    border-right: 1px solid var(--cell-border);
+    border-radius: 0 6px 6px 0;
+}
+
+.pipeline-cycle-cell {
+    color: var(--text-muted);
+    font-weight: 700;
+    text-align: center;
+}
+
+.pipeline-instruction {
+    width: 100%;
+    min-height: 28px;
+    padding: 6px 8px;
+    border: 1px solid rgba(154, 168, 188, 0.18);
+    border-radius: 6px;
+    background: #111827;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+.pipeline-stage-cell:empty::before {
+    content: "-";
+    color: var(--text-muted);
+    opacity: 0.45;
+}
+
+.pipeline-grid tbody tr:hover td {
+    background: #1c2940;
 }
 
 .memory-title {
