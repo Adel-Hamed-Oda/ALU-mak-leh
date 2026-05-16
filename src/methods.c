@@ -10,8 +10,8 @@ void reset(int b) {
 void add(){
     int NegativeFlag=0;
     int OverflowFlag=0;
-    int original8thBitR1=(GPRS[R1]>>7);
-    int original8thBitR2=(GPRS[R2_imm]>>7);
+    int original8thBitR1=(GPRS[R1]>>7)&1;
+    int original8thBitR2=(GPRS[R2_imm]>>7)&1;
 
     int answer=GPRS[R1]+GPRS[R2_imm];
     GPRS[R1] = (int8_t) answer;
@@ -26,7 +26,7 @@ void add(){
         SREG&=(~(1<<4));
     }
 
-    int result8thBit=answer>>7;
+    int result8thBit=(answer>>7)&1;
 
 /*
     Check for overflow
@@ -85,14 +85,14 @@ to_bin(SREG,8);
 void sub(){
     int NegativeFlag=0;
     int OverflowFlag=0;
-    int original8thBitR1=(GPRS[R1]>>7);
-    int original8thBitR2=(GPRS[R2_imm]>>7);
+    int original8thBitR1=(GPRS[R1]>>7)&1;
+    int original8thBitR2=(GPRS[R2_imm]>>7)&1;
     int answer=GPRS[R1]-GPRS[R2_imm];
     GPRS[R1] = (int8_t) answer;
     /*
         Check for overflow
     */
-    int result8thBit=GPRS[R1]>>7;
+    int result8thBit=(GPRS[R1]>>7)&1;
 if (original8thBitR1!=original8thBitR2) {
     if (result8thBit!=original8thBitR2) {
         SREG&=~(1<<3);
@@ -150,7 +150,7 @@ void mul(){
     /*
         Update Negative Flag
     */
-   int result8thBit=GPRS[R1]>>7;
+   int result8thBit=(GPRS[R1]>>7)&1;
    if(result8thBit==1){
         SREG|=(1<<2);
     }
@@ -197,7 +197,7 @@ void and(){
     /*
         Update Negative Flag
     */
-   int result8thBit=GPRS[R1]>>7;
+   int result8thBit=(GPRS[R1]>>7)&1;
    if(result8thBit==1){
         SREG|=(1<<2);
     }
@@ -226,7 +226,7 @@ void or(){
     /*
         Update Negative Flag
     */
-   int result8thBit=GPRS[R1]>>7;
+   int result8thBit=(GPRS[R1]>>7)&1;
    if(result8thBit==1){
         SREG|=(1<<2);
     }
@@ -260,7 +260,7 @@ void sal(){
     /*
         Update Negative Flag
     */
-    int result8thBit=GPRS[R1]>>7;
+    int result8thBit=(GPRS[R1]>>7)&1;
     if(result8thBit==1){
           SREG|=(1<<2);
      }
@@ -287,7 +287,7 @@ void sar(){
     /*
         Update Negative Flag
     */
-    int result8thBit=GPRS[R1]>>7;
+    int result8thBit=(GPRS[R1]>>7)&1;
     if(result8thBit==1){
           SREG|=(1<<2);
      }
