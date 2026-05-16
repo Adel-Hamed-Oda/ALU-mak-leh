@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA OS Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="simulator-toolbar">
+        <div style="font-weight: bold; font-size: 18px; margin-right: auto; color: var(--text-primary);">
+            MeowArch Simulator
+        </div>
+        <div class="toolbar-actions">
+            <button type="button" onclick="fetch('/run', { method: 'POST' })">Run</button>
+            <button type="button" onclick="fetch('/pause', { method: 'POST' })">Pause</button>
+            <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
+            <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
+            <button type="button" onclick="fetch('/load', { method: 'POST' })">Load Program</button>
+        </div>
+    </div>
+
+    <div class="memory-panels-wrapper">
+        <div class="left-panels">
+            <div style="display: flex; height: 100%; min-height: 0;">
+                <div class="memory-panel">
+                    <div class="memory-title">Instruction Memory</div>
+                    <div id="instruction-memory"></div>
+                </div>
+
+                <div class="memory-panel">
+                    <div class="memory-title">Data Memory</div>
+                    <div id="data-memory"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pipeline-panel">
+            <div class="pipeline-title">Instruction Pipeline</div>
+            <div id="pipeline-table">
+                <table class="pipeline-grid">
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>Fetch (IF)</th>
+                            <th>Decode (ID)</th>
+                            <th>Execute (EX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 12px;" class="pipeline-title">General Purpose Registers</div>
+            <div class="registers-panel">
+                <div id="registers" class="registers-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

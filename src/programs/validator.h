@@ -1,1 +1,0 @@
-EXCEPTION is_valid_instruction(const char *line);
