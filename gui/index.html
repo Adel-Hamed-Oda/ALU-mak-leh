@@ -3,45 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALUmak leh</title>
-
+    <title>CA OS Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="simulator-toolbar" aria-label="Simulator controls">
-        <button type="button" onclick="fetch('/run', { method: 'POST' })">Run</button>
-        <button type="button" onclick="fetch('/pause', { method: 'POST' })">Pause</button>
-        <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
-        <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
-        <button type="button" onclick="fetch('/load', { method: 'POST' })">Load Program</button>
-    </header>
+    <div class="simulator-toolbar">
+        <div style="font-weight: bold; font-size: 18px; margin-right: auto; color: var(--text-primary);">
+            MeowArch Simulator
+        </div>
+        <div id="clock-display" style="font-family: Consolas, monospace; color: #60a5fa; font-weight: bold; margin-right: 20px;">
+            CLK: 0 | PC: 0
+        </div>
+    </div>
 
     <div class="memory-panels-wrapper">
         <div class="left-panels">
-            <aside class="pipeline-panel" aria-labelledby="pipeline-title">
-                <h2 id="pipeline-title" class="pipeline-title">Pipeline</h2>
-                <div id="pipeline-table">
+            <div style="display: flex; height: 100%; min-height: 0;">
+                <div class="memory-panel">
+                    <div class="memory-title">Instruction Memory</div>
+                    <div id="instruction-memory"></div>
                 </div>
-            </aside>
 
-            <aside class="registers-panel" aria-labelledby="registers-title">
-                <h2 id="registers-title" class="pipeline-title">Registers</h2>
-                <div id="registers" class="registers-grid">
+                <div class="memory-panel">
+                    <div class="memory-title">Data Memory</div>
+                    <div id="data-memory"></div>
                 </div>
-            </aside>
+            </div>
         </div>
 
-        <aside class="memory-panel" aria-labelledby="instruction-memory-title">
-            <h2 id="instruction-memory-title" class="memory-title">Instruction Memory</h2>
-            <div id="instruction-memory" class="memory-list">
+        <div class="pipeline-panel">
+            <div class="pipeline-title">Instruction Pipeline</div>
+            <div id="pipeline-table">
+                <table class="pipeline-grid">
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>Fetch (IF)</th>
+                            <th>Decode (ID)</th>
+                            <th>Execute (EX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
             </div>
-        </aside>
-
-        <aside class="memory-panel" aria-labelledby="data-memory-title">
-            <h2 id="data-memory-title" class="memory-title">Data Memory</h2>
-            <div id="data-memory" class="memory-list">
+            
+            <div style="margin-top: 12px;" class="pipeline-title">General Purpose Registers</div>
+            <div class="registers-panel">
+                <div id="registers" class="registers-grid"></div>
             </div>
-        </aside>
+        </div>
     </div>
 
     <script src="utils.js"></script>
