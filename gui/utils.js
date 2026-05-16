@@ -29,7 +29,7 @@ const SIGNED_IMMEDIATE_OPCODES = new Set([
     "SB"
 ]);
 
-const END_OF_PROGRAM_INSTRUCTION = 0xff;
+const END_OF_PROGRAM_INSTRUCTION = 0xffff;
 
 function signExtend6(value) {
     return (value & 0x20) ? value - 0x40 : value;

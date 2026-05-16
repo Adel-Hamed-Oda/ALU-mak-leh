@@ -1,10 +1,10 @@
+let lastClk = -1; 
+const pipelineRows = [];
+
 async function fetchState() {
     const res = await fetch(`./data.json?t=${Date.now()}`);
     return await res.json();
 }
-
-const pipelineRows = [];
-
 function renderMemory(containerId, memory, formatValue = String) {
     const container = document.getElementById(containerId);
 
@@ -34,7 +34,43 @@ function renderMemory(containerId, memory, formatValue = String) {
         container.appendChild(div);
     });
 }
+function renderRegisters(registers) {
+    const container = document.getElementById("registers");
 
+    container.innerHTML = "";
+
+    const registerEntries = Array.isArray(registers)
+        ? registers.map((value, index) => [`R${index}`, value])
+        : Object.entries(registers || {}).map(([address, value]) => {
+            const registerAddress = Number.isInteger(Number(address)) ? `R${address}` : address;
+            return [registerAddress, value];
+        });
+
+    registerEntries.forEach(([address, value]) => {
+        const div = document.createElement("div");
+        const registerAddress = document.createElement("span");
+        const registerValue = document.createElement("span");
+
+        div.className = "register-cell";
+        registerAddress.className = "register-address";
+        registerValue.className = "register-value";
+
+        registerAddress.textContent = address;
+        registerValue.textContent = value;
+
+        div.appendChild(registerAddress);
+        div.appendChild(registerValue);
+
+        container.appendChild(div);
+    });
+}
+
+function updatePipeline(state) {
+    if (state.clk === lastClk) return;
+
+    lastClk = state.clk;
+    
+}
 
 async function updateUI() {
     let state;
@@ -47,6 +83,7 @@ async function updateUI() {
 
     renderMemory("instruction-memory", state.instruction_memory, decodeInstruction);
     renderMemory("data-memory", state.data_memory);
+    renderRegisters(state.registers);
     updatePipeline(state);
 }
 updateUI();

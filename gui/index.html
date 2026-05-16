@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CA Simulator</title>
+    <title>ALUmak leh</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,11 +17,19 @@
     </header>
 
     <div class="memory-panels-wrapper">
-        <aside class="pipeline-panel" aria-labelledby="pipeline-title">
-            <h2 id="pipeline-title" class="pipeline-title">Pipeline</h2>
-            <div id="pipeline-table">
-            </div>
-        </aside>
+        <div class="left-panels">
+            <aside class="pipeline-panel" aria-labelledby="pipeline-title">
+                <h2 id="pipeline-title" class="pipeline-title">Pipeline</h2>
+                <div id="pipeline-table">
+                </div>
+            </aside>
+
+            <aside class="registers-panel" aria-labelledby="registers-title">
+                <h2 id="registers-title" class="pipeline-title">Registers</h2>
+                <div id="registers" class="registers-grid">
+                </div>
+            </aside>
+        </div>
 
         <aside class="memory-panel" aria-labelledby="instruction-memory-title">
             <h2 id="instruction-memory-title" class="memory-title">Instruction Memory</h2>

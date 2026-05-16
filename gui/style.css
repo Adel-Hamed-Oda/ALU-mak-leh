@@ -82,6 +82,16 @@ body {
     overflow: hidden;
 }
 
+.left-panels {
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 560px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 .memory-panel {
     width: min(250px, 50vw);
     height: 100%;
@@ -101,16 +111,29 @@ body {
 }
 
 .pipeline-panel {
-    height: 100%;
+    height: auto;
     min-height: 0;
     min-width: 0;
     max-width: none;
     padding: 12px;
-    flex: 1 1 560px;
+    flex: 1 1 58%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     background: var(--panel-bg);
+    border-left: 1px solid var(--panel-border);
+}
+
+.registers-panel {
+    min-height: 0;
+    min-width: 0;
+    padding: 12px;
+    flex: 0 0 174px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--panel-bg);
+    border-top: 1px solid var(--panel-border);
     border-left: 1px solid var(--panel-border);
 }
 
@@ -228,6 +251,50 @@ body {
 
 .pipeline-grid tbody tr:hover td {
     background: #1c2940;
+}
+
+.registers-grid {
+    min-height: 0;
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-content: start;
+    gap: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 2px;
+    scrollbar-color: var(--cell-border) transparent;
+}
+
+.register-cell {
+    position: relative;
+    min-height: 44px;
+    padding: 14px 6px 8px;
+    border: 1px solid var(--cell-border);
+    border-radius: 6px;
+    background: var(--cell-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+.register-address {
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.register-value {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
 .memory-title {

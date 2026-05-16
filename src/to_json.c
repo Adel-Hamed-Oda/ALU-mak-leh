@@ -57,9 +57,20 @@ void write_clk_PC() {
     fprintf(json_file, "%i,\n    \"PC\": %i", clk, (int)PC);
 }
 
+void write_opcode() {
+    fprintf(json_file, "%i", opcode);
+}
+void write_R1() {
+    fprintf(json_file, "%i", R1);
+}
+void write_R2_imm() {
+    fprintf(json_file, "%i", R2_imm);
+}
+
 void write_current_instruction() {
     fprintf(json_file, "%i", current_instruction);
 }
+
 
 void write_everything_to_json() {
     json_file = open_data_json();
@@ -87,6 +98,18 @@ void write_everything_to_json() {
 
     fprintf(json_file, "    \"current_instruction\": ");
     write_current_instruction();
+    fprintf(json_file, ",\n");
+
+    fprintf(json_file, "    \"opcode\": ");
+    write_opcode();
+    fprintf(json_file, ",\n");
+    
+    fprintf(json_file, "    \"R1\": ");
+    write_R1();
+    fprintf(json_file, ",\n");
+
+    fprintf(json_file, "    \"R2_imm\": ");
+    write_R2_imm();
     fprintf(json_file, ",\n");
 
     fprintf(json_file, "    \"clk\": ");

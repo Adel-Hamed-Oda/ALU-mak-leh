@@ -47,13 +47,13 @@ void readProgram(string filename) {
         int8_t R1 = getR1(_R1);
         int8_t R2_imm = getR2_imm(_R2_imm);
 
-        int8_t AND = (1 << 6) - 1;
+        int8_t SIX_BIT_MASK = (1 << 6) - 1;
 
-        int16_t instruction = ((opcode & AND) << 12) + ((R1 & AND) << 6) + (R2_imm & AND);
+        int16_t instruction = ((opcode & SIX_BIT_MASK) << 12) + ((R1 & SIX_BIT_MASK) << 6) + (R2_imm & SIX_BIT_MASK);
 
         push_back_instr(instruction);
     }
 
-    push_back_instr(0xFF);
+    push_back_instr(0xFFFF);
     fclose(f);
 }
