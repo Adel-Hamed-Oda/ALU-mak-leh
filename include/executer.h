@@ -28,3 +28,6 @@ void execute();
     set current instruction to be -1
 */
 void flush();
+
+
+void to_bin(int16_t x, int bits);
