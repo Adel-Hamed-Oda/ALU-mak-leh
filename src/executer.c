@@ -52,8 +52,6 @@ void decode() {
 }
 
 void execute() {
-    SREG = 0;
-
     if (opcode == MEOW) {
         return;
     }
