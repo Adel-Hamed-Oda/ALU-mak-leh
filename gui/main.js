@@ -260,6 +260,15 @@ function renderRegisters(registers) {
     });
 }
 
+function formatBinary(value, bits) {
+    const normalized = Number(value) & ((1 << bits) - 1);
+    return normalized.toString(2).padStart(bits, "0");
+}
+
+function renderSREG(value) {
+    document.getElementById("sreg-binary").textContent = formatBinary(value, 8);
+}
+
 
 function updatePipeline(state) {
     const isInitialResetState =
@@ -363,6 +372,7 @@ async function updateUI() {
     }
     renderMemory("instruction-memory", state.instruction_memory, decodeInstruction);
     renderMemory("data-memory", state.data_memory);
+    renderSREG(state.SREG);
     renderRegisters(state.registers);
     updatePipeline(state);
 }

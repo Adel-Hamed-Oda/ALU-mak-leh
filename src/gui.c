@@ -18,6 +18,13 @@ static void sleep_for_commands(void) {
         usleep(50000);
     #endif
 }
+static void sleep_for_run(void) {
+    #ifdef _WIN32
+        Sleep(2000);
+    #else
+        usleep(2000000);
+    #endif
+}
 
 static void write_command(const char *command) {
     FILE *file = fopen(COMMAND_PATH, "w");
@@ -89,6 +96,11 @@ void run_gui() {
             strncpy(current_program, filename, sizeof(current_program) - 1);
             current_program[sizeof(current_program) - 1] = '\0';
             handle_load(current_program);
+            write_command("IDLE");
+        } else if (strcmp(command, "RUN") == 0) {
+            sleep_for_run();
+            handle_step();
+        } else if (strcmp(command, "PAUSE") == 0) {
             write_command("IDLE");
         }
 

@@ -511,11 +511,47 @@ button:active {
 }
 
 .registers-panel {
-    flex: 0 0 clamp(125px, 20vh, 175px);
+    flex: 0 0 clamp(118px, 18vh, 160px);
     min-height: 0;
     margin-top: 0;
     padding: 12px;
     overflow: hidden;
+}
+
+.sreg-panel {
+    flex: 0 0 42px;
+    min-height: 42px;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-panel);
+    background: var(--bg-body);
+    color: var(--text-primary);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+}
+
+.sreg-label {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.sreg-binary {
+    color: var(--accent-yellow);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.sreg-flags {
+    color: var(--text-muted);
+    font-size: 10px;
+    white-space: nowrap;
 }
 
 .registers-grid {
