@@ -10,6 +10,7 @@ int8_t R1 = 0;
 int8_t R2_imm = 0;
 
 int clk = 0;
+int gui_mode = 0;
 
 void enter() {
     printf("\nPress [ENTER] to go to the next clk cycle\n");
@@ -44,13 +45,15 @@ void enter() {
 
 void handleClkCycle() {
     OPCODE cur_opcode = opcode;
-    write_everything_to_json();
     execute();
     write_everything_to_json();
 
     if (cur_opcode == JR || (GPRS[R1] == 0 && cur_opcode == BEQZ)) {        
-        enter();
+        if (!gui_mode) {
+            enter();
+        }
         clk++;
+        write_everything_to_json();
 
         return;
     }
@@ -59,14 +62,20 @@ void handleClkCycle() {
     fetch();
     write_everything_to_json();
 
-    enter();
+    if (!gui_mode) {
+        enter();
+    }
     clk++;
+    write_everything_to_json();
 
     return;
 }
 
 int main(int argc, char *argv[]) {
     if (argc >= 2 && strcmp(argv[1], "--gui") == 0) {
+        readProgram("program_1.txt");
+        write_everything_to_json();
+
         run_gui();
         return 0;
     }
