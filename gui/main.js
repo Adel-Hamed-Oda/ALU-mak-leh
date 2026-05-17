@@ -306,11 +306,6 @@ function updatePipeline(state) {
         return;
     }
 
-    if (isFinishedState) {
-        lastClk = state.clk;
-        return;
-    }
-
     // 2. Handle runtime resets (when the simulator resets while the page is open)
     if (lastClk !== -1 && state.clk < lastClk) {
         pipelineRows = [];
@@ -339,7 +334,9 @@ function updatePipeline(state) {
 
     // Resolve EX Stage (Execute)
     let exStage = "-";
-    if (pipelineRows.length > 0) {
+    if (state.executing_instruction !== undefined && state.executing_instruction !== -1) {
+        exStage = decodeInstruction(state.executing_instruction);
+    } else if (state.executing_instruction === undefined && pipelineRows.length > 0) {
         exStage = pipelineRows[pipelineRows.length - 1].id;
     }
 

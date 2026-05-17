@@ -5,6 +5,7 @@ int8_t SREG = 0;
 int16_t PC = 0;
 
 int16_t current_instruction = -1;
+int16_t executing_instruction = -1;
 OPCODE opcode = MEOW;
 int8_t R1 = 0;
 int8_t R2_imm = 0;
@@ -43,8 +44,17 @@ void enter() {
     }
 }
 
+static int16_t encode_pipeline_instruction(OPCODE stage_opcode, int8_t stage_R1, int8_t stage_R2_imm) {
+    if (stage_opcode == MEOW) {
+        return -1;
+    }
+
+    return (int16_t)(((stage_opcode & 0x0F) << 12) | ((stage_R1 & 0x3F) << 6) | (stage_R2_imm & 0x3F));
+}
+
 void handleClkCycle() {
     OPCODE cur_opcode = opcode;
+    executing_instruction = encode_pipeline_instruction(opcode, R1, R2_imm);
     execute();
 
     if (cur_opcode == JR || (GPRS[R1] == 0 && cur_opcode == BEQZ)) {        

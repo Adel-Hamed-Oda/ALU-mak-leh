@@ -41,6 +41,7 @@ void handle_load(const char *filename) {
     memset(data_memory, 0, DATA_MEMORY_SIZE * sizeof(int8_t));
 
     current_instruction = -1;
+    executing_instruction = -1;
 
     opcode = MEOW;
     R1 = 0;

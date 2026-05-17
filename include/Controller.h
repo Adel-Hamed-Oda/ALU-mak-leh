@@ -3,6 +3,7 @@
 #include "registers.h"
 
 extern int16_t current_instruction;
+extern int16_t executing_instruction;
 
 extern OPCODE opcode;
 extern int8_t R1;

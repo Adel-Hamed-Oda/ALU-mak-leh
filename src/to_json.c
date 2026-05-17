@@ -71,6 +71,10 @@ void write_current_instruction() {
     fprintf(json_file, "%i", current_instruction);
 }
 
+void write_executing_instruction() {
+    fprintf(json_file, "%i", executing_instruction);
+}
+
 
 void write_everything_to_json() {
     json_file = open_data_json();
@@ -98,6 +102,10 @@ void write_everything_to_json() {
 
     fprintf(json_file, "    \"current_instruction\": ");
     write_current_instruction();
+    fprintf(json_file, ",\n");
+
+    fprintf(json_file, "    \"executing_instruction\": ");
+    write_executing_instruction();
     fprintf(json_file, ",\n");
 
     fprintf(json_file, "    \"opcode\": ");
