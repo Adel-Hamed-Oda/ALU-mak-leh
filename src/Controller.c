@@ -39,7 +39,7 @@ void enter() {
             break;
         }
 
-        getchar();
+        c = getchar();
     }
 }
 
