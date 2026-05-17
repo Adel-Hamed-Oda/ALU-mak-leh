@@ -417,6 +417,16 @@ button:active {
     left: 8px;
 }
 
+.pc-marker {
+    position: absolute;
+    right: 10px;
+    color: var(--accent-yellow);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+
 .memory-value,
 .register-value {
     max-width: 100%;

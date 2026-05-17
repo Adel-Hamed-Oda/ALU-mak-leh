@@ -11,4 +11,5 @@ extern int8_t R2_imm;
 extern int clk;
 extern int gui_mode;
 
+int program_finished();
 void handleClkCycle();

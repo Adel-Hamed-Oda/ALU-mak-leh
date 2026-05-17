@@ -56,6 +56,10 @@ void handle_reset() {
 }
 
 void handle_step() {
+    if (program_finished()) {
+        return;
+    }
+
     handleClkCycle();
 }
 
@@ -98,8 +102,16 @@ void run_gui() {
             handle_load(current_program);
             write_command("IDLE");
         } else if (strcmp(command, "RUN") == 0) {
-            sleep_for_run();
-            handle_step();
+            if (program_finished()) {
+                write_command("IDLE");
+            } else {
+                sleep_for_run();
+                handle_step();
+
+                if (program_finished()) {
+                    write_command("IDLE");
+                }
+            }
         } else if (strcmp(command, "PAUSE") == 0) {
             write_command("IDLE");
         }

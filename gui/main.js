@@ -200,7 +200,7 @@ async function fetchState() {
     const res = await fetch(`./data.json?t=${Date.now()}`);
     return await res.json();
 }
-function renderMemory(containerId, memory, formatValue = String) {
+function renderMemory(containerId, memory, formatValue = String, markerIndex = null) {
     const container = document.getElementById(containerId);
 
     container.innerHTML = "";
@@ -225,6 +225,13 @@ function renderMemory(containerId, memory, formatValue = String) {
 
         div.appendChild(memoryAddress);
         div.appendChild(memoryValue);
+
+        if (index === markerIndex) {
+            const marker = document.createElement("span");
+            marker.className = "pc-marker";
+            marker.textContent = "*";
+            div.appendChild(marker);
+        }
 
         container.appendChild(div);
     });
@@ -275,6 +282,11 @@ function updatePipeline(state) {
         state.clk === 0 &&
         state.current_instruction === -1 &&
         (state.opcode === 12 || state.opcode === -1);
+    const isFinishedState =
+        state.current_instruction === -1 &&
+        (state.opcode === 12 || state.opcode === -1) &&
+        Array.isArray(state.instruction_memory) &&
+        state.instruction_memory[state.PC] === 65535;
 
     // 1. THE FIX: Handle initial page load desync
     if (lastClk === -1 && pipelineRows.length > 0) {
@@ -291,6 +303,11 @@ function updatePipeline(state) {
         pipelineRows = [];
         localStorage.removeItem("meowArchPipeline");
         renderPipelineTable();
+        return;
+    }
+
+    if (isFinishedState) {
+        lastClk = state.clk;
         return;
     }
 
@@ -370,7 +387,7 @@ async function updateUI() {
     } catch (error) {
         return;
     }
-    renderMemory("instruction-memory", state.instruction_memory, decodeInstruction);
+    renderMemory("instruction-memory", state.instruction_memory, decodeInstruction, state.PC);
     renderMemory("data-memory", state.data_memory);
     renderSREG(state.SREG);
     renderRegisters(state.registers);

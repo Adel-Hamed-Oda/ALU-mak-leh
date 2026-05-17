@@ -69,6 +69,10 @@ void handleClkCycle() {
     return;
 }
 
+int program_finished() {
+    return get_instr(PC) == -1 && opcode == MEOW && current_instruction == -1;
+}
+
 int main(int argc, char *argv[]) {
     if (argc >= 2 && strcmp(argv[1], "--gui") == 0) {
         run_gui();
@@ -80,7 +84,7 @@ int main(int argc, char *argv[]) {
     write_everything_to_json();
 
     while (true) {
-        if (get_instr(PC) == -1 && opcode == MEOW && current_instruction == -1) {
+        if (program_finished()) {
             break;
         }
         handleClkCycle();
