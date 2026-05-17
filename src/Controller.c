@@ -85,6 +85,7 @@ int program_finished() {
 
 int main(int argc, char *argv[]) {
     if (argc >= 2 && strcmp(argv[1], "--gui") == 0) {
+        printf("To view the GUI:\n1) Open a new terminal\n2) Run: python gui/server.py\n");
         run_gui();
         return 0;
     }
