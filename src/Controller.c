@@ -65,7 +65,12 @@ void handleClkCycle() {
     return;
 }
 
-int main(int argc, void* argv) {
+int main(int argc, char *argv[]) {
+    if (argc >= 2 && strcmp(argv[1], "--gui") == 0) {
+        run_gui();
+        return 0;
+    }
+
     readProgram("program_1.txt");
     clk = 0;
     write_everything_to_json();
@@ -81,5 +86,5 @@ int main(int argc, void* argv) {
 }
 
 /*
-gcc Controller.c data_memory.c executer.c instruction_memory.c methods.c parser.c to_json.c -o meow.exe
+gcc Controller.c data_memory.c executer.c instruction_memory.c methods.c parser.c to_json.c gui.c -o meow.exe
  */
