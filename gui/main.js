@@ -1,5 +1,17 @@
 let lastClk = -1;
 let pipelineRows = loadPipelineRows();
+let lastHighlightedRegister = null;
+const REGISTER_WRITING_OPCODES = new Set([
+    "ADD",
+    "SUB",
+    "MUL",
+    "LDI",
+    "AND",
+    "OR",
+    "SAL",
+    "SAR",
+    "LB"
+]);
 
 function loadPipelineRows() {
     try {
@@ -236,24 +248,80 @@ function renderMemory(containerId, memory, formatValue = String, markerIndex = n
         container.appendChild(div);
     });
 }
-function renderRegisters(registers) {
+
+function getWrittenRegisterFromInstruction(encodedInstruction) {
+    const rawInstruction = Number(encodedInstruction);
+
+    if (!Number.isFinite(rawInstruction) || rawInstruction === -1) {
+        return null;
+    }
+
+    const instruction = rawInstruction & 0xffff;
+
+    if (instruction === END_OF_PROGRAM_INSTRUCTION) {
+        return null;
+    }
+
+    const opcodeName = OPCODE_NAMES[(instruction >>> 12) & 0x0f];
+
+    if (!REGISTER_WRITING_OPCODES.has(opcodeName)) {
+        return null;
+    }
+
+    return (instruction >>> 6) & 0x3f;
+}
+
+function getRegisterIndex(address) {
+    const numericAddress = Number(address);
+
+    if (Number.isInteger(numericAddress)) {
+        return numericAddress;
+    }
+
+    const match = String(address).match(/^R(\d+)$/i);
+    return match ? Number(match[1]) : null;
+}
+
+function getHighlightedRegister(state) {
+    if (
+        state.clk === 0 &&
+        state.current_instruction === -1 &&
+        state.executing_instruction === -1
+    ) {
+        lastHighlightedRegister = null;
+    }
+
+    const writtenRegister = getWrittenRegisterFromInstruction(state.executing_instruction);
+
+    if (writtenRegister !== null) {
+        lastHighlightedRegister = writtenRegister;
+    }
+
+    return lastHighlightedRegister;
+}
+
+function renderRegisters(registers, highlightedRegister = null) {
     const container = document.getElementById("registers");
 
     container.innerHTML = "";
 
     const registerEntries = Array.isArray(registers)
-        ? registers.map((value, index) => [`R${index}`, value])
+        ? registers.map((value, index) => [`R${index}`, value, index])
         : Object.entries(registers || {}).map(([address, value]) => {
-            const registerAddress = Number.isInteger(Number(address)) ? `R${address}` : address;
-            return [registerAddress, value];
+            const registerIndex = getRegisterIndex(address);
+            const registerAddress = registerIndex !== null ? `R${registerIndex}` : address;
+            return [registerAddress, value, registerIndex];
         });
 
-    registerEntries.forEach(([address, value]) => {
+    registerEntries.forEach(([address, value, registerIndex]) => {
         const div = document.createElement("div");
         const registerAddress = document.createElement("span");
         const registerValue = document.createElement("span");
 
         div.className = "register-cell";
+        if (registerIndex === highlightedRegister) {
+            div.classList.add("register-cell-highlight");
+        }
         registerAddress.className = "register-address";
         registerValue.className = "register-value";
 
@@ -387,7 +455,7 @@ async function updateUI() {
     renderMemory("instruction-memory", state.instruction_memory, decodeInstruction, state.PC);
     renderMemory("data-memory", state.data_memory);
     renderSREG(state.SREG);
-    renderRegisters(state.registers);
+    renderRegisters(state.registers, getHighlightedRegister(state));
     updatePipeline(state);
 }
 updateUI();

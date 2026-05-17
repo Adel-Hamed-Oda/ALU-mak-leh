@@ -591,6 +591,22 @@ button:active {
     transform: translateY(-3px);
 }
 
+.register-cell.register-cell-highlight {
+    border-color: var(--accent-yellow);
+    background: rgba(246, 224, 94, 0.08);
+    box-shadow: 0 0 14px rgba(246, 224, 94, 0.26);
+}
+
+.register-cell.register-cell-highlight:hover {
+    border-color: var(--accent-yellow);
+    background: rgba(246, 224, 94, 0.12);
+    box-shadow: 0 0 16px rgba(246, 224, 94, 0.34);
+}
+
+.register-cell.register-cell-highlight .register-address {
+    color: var(--accent-yellow);
+}
+
 .register-address {
     position: absolute;
     top: 7px;
