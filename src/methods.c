@@ -25,11 +25,10 @@ void add()
     else
         reset(C_FLAG);
 
-    if (((GPRS[R1] ^ GPRS[R2_imm]) >> 7) != ((tmp >> 7) & 1))
+    if (((GPRS[R1] ^ (int8_t)tmp) & (GPRS[R2_imm] ^ (int8_t)tmp)) & 0x80)
         set(V_FLAG);
     else
         reset(V_FLAG);
-
     GPRS[R1] += GPRS[R2_imm];
 
     if (GPRS[R1] < 0)
