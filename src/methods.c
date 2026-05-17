@@ -17,10 +17,11 @@ void reset(int b)
 
 void add()
 {
-    int tmp = GPRS[R1];
-    tmp += GPRS[R2_imm];
+    // Casing into uint8_t to force bitwise adding and use the 9th bit of temp to determine if there is a carry or not
+    unsigned int tmp = (uint8_t)GPRS[R1] + (uint8_t)GPRS[R2_imm];
 
-    if (tmp >> 8)
+    // checks if 9th bit is 1, if it is then there is a carry
+    if (tmp > 0xFF)
         set(C_FLAG);
     else
         reset(C_FLAG);
