@@ -25,11 +25,14 @@ void fetch()
         return;
     }
 
-    printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS: %i\n", clk, PC);
+    if (!gui_mode) printf("[Cycle: %i]: FETCHING THE CURRENT INSTRUCTION AT ADDRESS: %i\n", clk, PC); 
 
     current_instruction = instruction_memory[PC++];
-    printf("[Cycle: %i]: INSTRUCTION = ", clk, current_instruction);
-    to_bin(current_instruction, 16);
+    
+    if (!gui_mode) {
+        printf("[Cycle: %i]: INSTRUCTION = ", clk, current_instruction);
+        to_bin(current_instruction, 16);
+    }
 }
 
 void decode()
@@ -41,16 +44,21 @@ void decode()
         return;
     }
 
-    printf("[Cycle: %i]: DECODING THE CURRENT INSTRUCTION\n", clk);
-    opcode = ((uint16_t)current_instruction >> 12);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: DECODING THE CURRENT INSTRUCTION\n", clk);
+    }
 
+    opcode = ((uint16_t)current_instruction >> 12);
+    
     R1 = current_instruction >> 6;
     R1 &= ((1 << 6) - 1);
 
     R2_imm = current_instruction & ((1 << 6) - 1);
 
-    printf("[Cycle: %i]: DECODED: OPCODE = %i, R1 = %i, R2/imm = ", clk, opcode, R1);
-    to_bin(R2_imm, 6);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: DECODED: OPCODE = %i, R1 = %i, R2/imm = ", clk, opcode, R1);
+        to_bin(R2_imm, 6);
+    }
 }
 
 void execute()
@@ -60,8 +68,10 @@ void execute()
     {
         return;
     }
-    printf("[Cycle: %i]: EXECUTING THE CURRENT INSTRUCTION, opcode = %i, R1 = %i, R2 = ", clk, opcode, R1);
-    to_bin(R2_imm, 6);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: EXECUTING THE CURRENT INSTRUCTION, opcode = %i, R1 = %i, R2 = ", clk, opcode, R1);
+        to_bin(R2_imm, 6);
+    } 
 
     switch (opcode)
     {
@@ -133,5 +143,5 @@ void flush()
     current_instruction = -1;
     opcode = MEOW;
 
-    printf("[Cycle: %i]: FLUSH CALLED, IF and ID have been set to NULL\n", clk);
+    if (!gui_mode) printf("[Cycle: %i]: FLUSH CALLED, IF and ID have been set to NULL\n", clk);
 }

@@ -46,36 +46,31 @@ void enter() {
 void handleClkCycle() {
     OPCODE cur_opcode = opcode;
     execute();
-    write_everything_to_json();
 
     if (cur_opcode == JR || (GPRS[R1] == 0 && cur_opcode == BEQZ)) {        
+        write_everything_to_json();
         if (!gui_mode) {
             enter();
         }
         clk++;
-        write_everything_to_json();
 
         return;
     }
 
     decode();
     fetch();
-    write_everything_to_json();
 
+    write_everything_to_json();
     if (!gui_mode) {
         enter();
     }
     clk++;
-    write_everything_to_json();
 
     return;
 }
 
 int main(int argc, char *argv[]) {
     if (argc >= 2 && strcmp(argv[1], "--gui") == 0) {
-        readProgram("program_1.txt");
-        write_everything_to_json();
-
         run_gui();
         return 0;
     }

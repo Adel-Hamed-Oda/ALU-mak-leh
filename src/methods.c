@@ -46,9 +46,11 @@ void add()
     else
         reset(S_FLAG);
 
-    printf("[Cycle: %i]: ADD INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: ADD INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void sub()
@@ -78,9 +80,11 @@ void sub()
     else
         reset(S_FLAG);
 
-    printf("[Cycle: %i]: SUB INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: SUB INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void mul()
@@ -100,9 +104,11 @@ void mul()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: MUL INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: MUL INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void ldi()
@@ -111,9 +117,12 @@ void ldi()
     R2_imm |= ((1 << 7) + (1 << 6)) * bit;
 
     GPRS[R1] = R2_imm;
-    printf("[Cycle: %i]: LDI INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+
+    if (!gui_mode) {
+        printf("[Cycle: %i]: LDI INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void beqz()
@@ -125,11 +134,9 @@ void beqz()
     {
         flush();
         PC += R2_imm - 1;
-        printf("[Cycle: %i]: BRANCH EXECUTED, PC is now %i\n", clk, PC);
-    }
-    else
-    {
-        printf("[Cycle: %i]: R1 is not 0, DID NOT BRANCH\n", clk);
+        if (!gui_mode) printf("[Cycle: %i]: BRANCH EXECUTED, PC is now %i\n", clk, PC);
+    } else {
+        if (!gui_mode) printf("[Cycle: %i]: R1 is not 0, DID NOT BRANCH\n", clk);
     }
 }
 
@@ -147,9 +154,11 @@ void and()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: AND INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: AND INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void or()
@@ -166,9 +175,11 @@ void or()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: OR INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: OR INSTRUCTION EXECUTED, R1 = %i\n", clk, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void jr()
@@ -176,7 +187,8 @@ void jr()
     PC = GPRS[R1];
     PC <<= 8;
     PC |= GPRS[R2_imm];
-    printf("[Cycle: %i]: JR EXECUTED, PC is now %i\n", clk, PC);
+
+    if (!gui_mode) printf("[Cycle: %i]: JR EXECUTED, PC is now %i\n", clk, PC);
     flush();
 }
 
@@ -207,9 +219,11 @@ void sal()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, R2_imm, GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, R2_imm, GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void sar()
@@ -239,9 +253,11 @@ void sar()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: SAR INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, ((uint8_t)R2_imm), GPRS[R1]);
-    printf("[Cycle: %i]: SREG = ", clk);
-    to_bin(SREG, 8);
+    if (!gui_mode) {
+        printf("[Cycle: %i]: SAR INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, ((uint8_t)R2_imm), GPRS[R1]);
+        printf("[Cycle: %i]: SREG = ", clk);
+        to_bin(SREG, 8);
+    }
 }
 
 void lb()
@@ -249,14 +265,13 @@ void lb()
     int bit = (R2_imm >> 5) & 1;
     R2_imm |= ((1 << 7) + (1 << 6)) * bit;
 
-    if (R2_imm < 0)
-    {
-        printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
+    if (R2_imm < 0) {
+        if (!gui_mode) printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
         return;
     }
 
     GPRS[R1] = get_data(R2_imm);
-    printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, R1 <- Mem[%i] = %i\n", clk, R2_imm, GPRS[R1]);
+    if (!gui_mode) printf("[Cycle: %i]: LB INSTRUCTION EXECUTED, R1 <- Mem[%i] = %i\n", clk, R2_imm, GPRS[R1]);
 }
 
 void sb()
@@ -264,14 +279,13 @@ void sb()
     int bit = (R2_imm >> 5) & 1;
     R2_imm |= ((1 << 7) + (1 << 6)) * bit;
 
-    if (R2_imm < 0)
-    {
-        printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
+    if (R2_imm < 0) {
+        if (!gui_mode) printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, ADDRESS: %i, OUT OF BOUND ERROR\n", clk, R2_imm);
         return;
     }
 
     set_data(R2_imm, GPRS[R1]);
-    printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, Mem[%i] is now %i\n", clk, R2_imm, GPRS[R1]);
+    if (!gui_mode) printf("[Cycle: %i]: SB INSTRUCTION EXECUTED, Mem[%i] is now %i\n", clk, R2_imm, GPRS[R1]);
 }
 
 void display_register_content(int idx)

@@ -1,6 +1,124 @@
-let lastClk = -1; 
-let previousRegisters = [];
-let pipelineRows = JSON.parse(localStorage.getItem("meowArchPipeline")) || [];
+let lastClk = -1;
+let pipelineRows = loadPipelineRows();
+
+function loadPipelineRows() {
+    try {
+        const storedRows = localStorage.getItem("meowArchPipeline");
+        return storedRows ? JSON.parse(storedRows) : [];
+    } catch (error) {
+        localStorage.removeItem("meowArchPipeline");
+        return [];
+    }
+}
+
+async function sendCommand(action, payload = null) {
+    const options = {
+        method: "POST",
+    };
+
+    if (payload) {
+        options.headers = {
+            "Content-Type": "application/json",
+        };
+        options.body = JSON.stringify(payload);
+    }
+
+    const res = await fetch(`/${action}`, options);
+    if (!res.ok) {
+        throw new Error(`Command failed: ${action}`);
+    }
+
+    return await res.json();
+}
+
+function resetPipelineHistory() {
+    lastClk = -1;
+    pipelineRows = [];
+    localStorage.removeItem("meowArchPipeline");
+    renderPipelineTable();
+}
+
+function closeLoadModal() {
+    const modal = document.getElementById("load-modal");
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+}
+
+async function openLoadModal() {
+    const modal = document.getElementById("load-modal");
+    const programList = document.getElementById("program-list");
+
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    programList.innerHTML = `<div class="program-list-empty">Loading programs...</div>`;
+
+    try {
+        const res = await fetch(`/api/programs?t=${Date.now()}`);
+        if (!res.ok) {
+            throw new Error("Could not load programs");
+        }
+
+        const programs = await res.json();
+        programList.innerHTML = "";
+
+        if (!Array.isArray(programs) || programs.length === 0) {
+            programList.innerHTML = `<div class="program-list-empty">No programs found</div>`;
+            return;
+        }
+
+        programs.forEach(filename => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "program-option";
+            button.textContent = filename;
+            button.addEventListener("click", async () => {
+                await sendCommand("load", { filename });
+                resetPipelineHistory();
+                closeLoadModal();
+            });
+
+            programList.appendChild(button);
+        });
+    } catch (error) {
+        programList.innerHTML = `<div class="program-list-empty">Could not load programs</div>`;
+    }
+}
+
+window.openLoadModal = openLoadModal;
+window.closeLoadModal = closeLoadModal;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loadButton = document.getElementById("load-program-button");
+    const closeButton = document.getElementById("close-load-modal");
+    const cancelButton = document.getElementById("cancel-load-modal");
+    const modal = document.getElementById("load-modal");
+
+    if (loadButton) {
+        loadButton.addEventListener("click", openLoadModal);
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener("click", closeLoadModal);
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener("click", closeLoadModal);
+    }
+
+    if (modal) {
+        modal.addEventListener("click", event => {
+            if (event.target === modal) {
+                closeLoadModal();
+            }
+        });
+    }
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeLoadModal();
+    }
+});
 
 async function fetchState() {
     const res = await fetch(`./data.json?t=${Date.now()}`);
@@ -68,6 +186,11 @@ function renderRegisters(registers) {
 
 
 function updatePipeline(state) {
+    const isInitialResetState =
+        state.clk === 0 &&
+        state.current_instruction === -1 &&
+        (state.opcode === 12 || state.opcode === -1);
+
     // 1. THE FIX: Handle initial page load desync
     if (lastClk === -1 && pipelineRows.length > 0) {
         const lastStoredCycle = pipelineRows[pipelineRows.length - 1].cycle;
@@ -76,6 +199,14 @@ function updatePipeline(state) {
             pipelineRows = [];
             localStorage.removeItem("meowArchPipeline");
         }
+    }
+
+    if (isInitialResetState) {
+        lastClk = -1;
+        pipelineRows = [];
+        localStorage.removeItem("meowArchPipeline");
+        renderPipelineTable();
+        return;
     }
 
     // 2. Handle runtime resets (when the simulator resets while the page is open)

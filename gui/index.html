@@ -16,7 +16,18 @@
             <button type="button" onclick="fetch('/pause', { method: 'POST' })">Pause</button>
             <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
             <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
-            <button type="button" onclick="fetch('/load', { method: 'POST' })">Load Program</button>
+            <button type="button" id="load-program-button">Load Program</button>
+        </div>
+    </div>
+    
+    <div id="load-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="load-modal-title">
+            <div class="modal-header">
+                <h3 id="load-modal-title">Select Program</h3>
+                <button type="button" id="close-load-modal" class="modal-close" aria-label="Close">X</button>
+            </div>
+            <div id="program-list" class="program-list"></div>
+            <button type="button" id="cancel-load-modal" class="cancel-btn">Cancel</button>
         </div>
     </div>
 
@@ -59,7 +70,7 @@
         </div>
     </div>
 
-    <script src="utils.js"></script>
-    <script src="main.js"></script>
+    <script src="utils.js?v=3"></script>
+    <script src="main.js?v=3"></script>
 </body>
 </html>
