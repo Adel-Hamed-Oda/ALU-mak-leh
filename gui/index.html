@@ -24,10 +24,28 @@
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="load-modal-title">
             <div class="modal-header">
                 <h3 id="load-modal-title">Select Program</h3>
+                <button type="button" id="new-program-button" class="modal-icon-button" aria-label="New Program">+</button>
                 <button type="button" id="close-load-modal" class="modal-close" aria-label="Close">X</button>
             </div>
-            <div id="program-list" class="program-list"></div>
-            <button type="button" id="cancel-load-modal" class="cancel-btn">Cancel</button>
+            <div id="program-picker-view">
+                <div id="program-list" class="program-list"></div>
+                <button type="button" id="cancel-load-modal" class="cancel-btn">Cancel</button>
+            </div>
+            <form id="program-create-view" class="program-create-view hidden">
+                <label class="program-field">
+                    <span>File name</span>
+                    <input id="program-filename" type="text" autocomplete="off" spellcheck="false" placeholder="program_2.txt">
+                </label>
+                <label class="program-field">
+                    <span>Code</span>
+                    <textarea id="program-code" spellcheck="false" rows="10"></textarea>
+                </label>
+                <div id="program-create-status" class="program-create-status" aria-live="polite"></div>
+                <div class="program-create-actions">
+                    <button type="button" id="back-to-program-list">Back</button>
+                    <button type="submit" id="save-program-button">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -70,7 +88,7 @@
         </div>
     </div>
 
-    <script src="utils.js?v=3"></script>
-    <script src="main.js?v=3"></script>
+    <script src="utils.js?v=4"></script>
+    <script src="main.js?v=4"></script>
 </body>
 </html>

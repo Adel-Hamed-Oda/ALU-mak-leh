@@ -38,18 +38,33 @@ function resetPipelineHistory() {
     renderPipelineTable();
 }
 
+function setLoadModalTitle(title) {
+    document.getElementById("load-modal-title").textContent = title;
+}
+
+function showProgramListView() {
+    document.getElementById("program-picker-view").classList.remove("hidden");
+    document.getElementById("program-create-view").classList.add("hidden");
+    setLoadModalTitle("Select Program");
+}
+
+function showCreateProgramView() {
+    document.getElementById("program-picker-view").classList.add("hidden");
+    document.getElementById("program-create-view").classList.remove("hidden");
+    document.getElementById("program-create-status").textContent = "";
+    document.getElementById("program-filename").focus();
+    setLoadModalTitle("New Program");
+}
+
 function closeLoadModal() {
     const modal = document.getElementById("load-modal");
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
 }
 
-async function openLoadModal() {
-    const modal = document.getElementById("load-modal");
+async function loadProgramList() {
     const programList = document.getElementById("program-list");
 
-    modal.classList.remove("hidden");
-    modal.setAttribute("aria-hidden", "false");
     programList.innerHTML = `<div class="program-list-empty">Loading programs...</div>`;
 
     try {
@@ -84,6 +99,52 @@ async function openLoadModal() {
     }
 }
 
+async function openLoadModal() {
+    const modal = document.getElementById("load-modal");
+
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+    showProgramListView();
+    await loadProgramList();
+}
+
+async function createProgram(event) {
+    event.preventDefault();
+
+    const filenameInput = document.getElementById("program-filename");
+    const codeInput = document.getElementById("program-code");
+    const status = document.getElementById("program-create-status");
+
+    status.textContent = "";
+
+    try {
+        const res = await fetch("/api/programs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                filename: filenameInput.value,
+                content: codeInput.value,
+            }),
+        });
+
+        const payload = await res.json();
+
+        if (!res.ok) {
+            status.textContent = payload.message || "Could not save program";
+            return;
+        }
+
+        filenameInput.value = "";
+        codeInput.value = "";
+        showProgramListView();
+        await loadProgramList();
+    } catch (error) {
+        status.textContent = "Could not save program";
+    }
+}
+
 window.openLoadModal = openLoadModal;
 window.closeLoadModal = closeLoadModal;
 
@@ -91,6 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadButton = document.getElementById("load-program-button");
     const closeButton = document.getElementById("close-load-modal");
     const cancelButton = document.getElementById("cancel-load-modal");
+    const newButton = document.getElementById("new-program-button");
+    const backButton = document.getElementById("back-to-program-list");
+    const createForm = document.getElementById("program-create-view");
     const modal = document.getElementById("load-modal");
 
     if (loadButton) {
@@ -103,6 +167,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (cancelButton) {
         cancelButton.addEventListener("click", closeLoadModal);
+    }
+
+    if (newButton) {
+        newButton.addEventListener("click", showCreateProgramView);
+    }
+
+    if (backButton) {
+        backButton.addEventListener("click", showProgramListView);
+    }
+
+    if (createForm) {
+        createForm.addEventListener("submit", createProgram);
     }
 
     if (modal) {

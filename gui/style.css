@@ -128,6 +128,10 @@ button:active {
     display: none;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .modal-content {
     width: min(440px, 100%);
     max-height: min(520px, calc(100vh - 36px));
@@ -164,6 +168,15 @@ button:active {
     padding: 0;
 }
 
+.modal-icon-button {
+    flex: 0 0 36px;
+    width: 36px;
+    min-height: 36px;
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+}
+
 .program-list {
     padding: 12px;
     display: flex;
@@ -190,6 +203,68 @@ button:active {
 
 .cancel-btn {
     margin: 0 12px 12px;
+}
+
+.program-create-view {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: auto;
+}
+
+.program-create-view.hidden {
+    display: none;
+}
+
+.program-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.program-field input,
+.program-field textarea {
+    width: 100%;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-body);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    outline: none;
+}
+
+.program-field input {
+    min-height: 40px;
+    padding: 8px 10px;
+}
+
+.program-field textarea {
+    min-height: 220px;
+    padding: 10px;
+    resize: vertical;
+    line-height: 1.35;
+}
+
+.program-field input:focus,
+.program-field textarea:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(3, 218, 198, 0.2);
+}
+
+.program-create-status {
+    min-height: 18px;
+    color: var(--accent-red);
+    font-size: 12px;
+}
+
+.program-create-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
 }
 
 .memory-panels-wrapper {
