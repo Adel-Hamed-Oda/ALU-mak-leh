@@ -16,7 +16,7 @@ void enter() {
     printf("\nPress [ENTER] to go to the next clk cycle\n");
     int c = getchar();
 
-    while (c == 'R' || c == 'M') {
+    while (c == 'R' || c == 'M' || c == 'D') {
         if (c == 'R') {
             int i;
             printf("Enter until the register block you want to view: ");
