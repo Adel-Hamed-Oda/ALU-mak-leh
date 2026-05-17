@@ -145,7 +145,12 @@ void sal(){
         return;
     }
 
-    GPRS[R1] <<= R2_imm;
+    if(R2_imm >= 8) {
+        GPRS[R1] = (int8_t)(0);
+    }else {
+        GPRS[R1] = (int8_t)(GPRS[R1] << R2_imm);
+    }
+
     if (GPRS[R1] < 0) set(N_FLAG);
     else reset(N_FLAG);
 
@@ -163,7 +168,12 @@ void sar(){
         return;
     }
 
-    GPRS[R1]= (int8_t)(GPRS[R1] >> R2_imm);
+    if (R2_imm>=8) {
+        GPRS[R1] = (GPRS[R1] < 0) ? (int8_t)(-1) : (int8_t)(0);
+    }else {
+        GPRS[R1] = (int8_t)(GPRS[R1] >> R2_imm);
+    }
+
     if (GPRS[R1] < 0) set(N_FLAG);
     else reset(N_FLAG);
 
