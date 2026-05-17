@@ -7,9 +7,8 @@
 #endif
 
 #define COMMAND_PATH "../gui/command.txt"
-#define DEFAULT_PROGRAM "program_1.txt"
 
-static char current_program[64] = DEFAULT_PROGRAM;
+static char current_program[64] = "";
 
 static void sleep_for_commands(void) {
     #ifdef _WIN32
@@ -34,7 +33,7 @@ static void write_command(const char *command) {
     }
 }
 
-void handle_load(const char *filename) {
+static void clear_gui_state(void) {
     clk = PC = SREG = 0;
 
     memset(GPRS, 0, GPRS_NUM * sizeof(int8_t));
@@ -48,11 +47,21 @@ void handle_load(const char *filename) {
     R2_imm = 0;
 
     clear_instr();
+}
+
+void handle_load(const char *filename) {
+    clear_gui_state();
     readProgram((char *)filename);
     write_everything_to_json();
 }
 
 void handle_reset() {
+    if (current_program[0] == '\0') {
+        clear_gui_state();
+        write_everything_to_json();
+        return;
+    }
+
     handle_load(current_program);
 }
 
