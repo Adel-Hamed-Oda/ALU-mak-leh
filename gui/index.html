@@ -17,6 +17,7 @@
             <button type="button" onclick="fetch('/step', { method: 'POST' })">Step</button>
             <button type="button" onclick="fetch('/reset', { method: 'POST' })">Reset</button>
             <button type="button" id="load-program-button">Load Program</button>
+            <button type="button" id="settings-button">Settings</button>
         </div>
     </div>
     
@@ -46,6 +47,40 @@
                     <button type="submit" id="save-program-button">Save</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content settings-modal-content" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+            <div class="modal-header">
+                <h3 id="settings-modal-title">Settings</h3>
+                <button type="button" id="close-settings-modal" class="modal-close" aria-label="Close">X</button>
+            </div>
+            <div class="settings-content">
+                <label class="settings-row">
+                    <span>Registers</span>
+                    <select id="register-format-select">
+                        <option value="binary">Binary</option>
+                        <option value="signed">Signed Integers</option>
+                        <option value="unsigned">Unsigned Integers</option>
+                    </select>
+                </label>
+                <label class="settings-row">
+                    <span>Instructions</span>
+                    <select id="instruction-format-select">
+                        <option value="text">Text</option>
+                        <option value="binary">Binary</option>
+                    </select>
+                </label>
+                <label class="settings-row">
+                    <span>Data</span>
+                    <select id="data-format-select">
+                        <option value="binary">Binary</option>
+                        <option value="signed">Signed Integers</option>
+                        <option value="unsigned">Unsigned Integers</option>
+                    </select>
+                </label>
+            </div>
         </div>
     </div>
 
@@ -93,7 +128,7 @@
         </div>
     </div>
 
-    <script src="utils.js?v=8"></script>
-    <script src="main.js?v=8"></script>
+    <script src="utils.js?v=9"></script>
+    <script src="main.js?v=9"></script>
 </body>
 </html>

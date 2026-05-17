@@ -1,6 +1,7 @@
 let lastClk = -1;
 let pipelineRows = loadPipelineRows();
 let lastHighlightedRegister = null;
+let lastState = null;
 const REGISTER_WRITING_OPCODES = new Set([
     "ADD",
     "SUB",
@@ -12,6 +13,18 @@ const REGISTER_WRITING_OPCODES = new Set([
     "SAR",
     "LB"
 ]);
+const DISPLAY_SETTINGS_STORAGE_KEY = "meowArchDisplaySettings";
+const DEFAULT_DISPLAY_SETTINGS = {
+    registers: "signed",
+    instructions: "text",
+    data: "signed"
+};
+const DISPLAY_SETTING_OPTIONS = {
+    registers: new Set(["binary", "signed", "unsigned"]),
+    instructions: new Set(["text", "binary"]),
+    data: new Set(["binary", "signed", "unsigned"])
+};
+let displaySettings = loadDisplaySettings();
 
 function loadPipelineRows() {
     try {
@@ -20,6 +33,66 @@ function loadPipelineRows() {
     } catch (error) {
         localStorage.removeItem("meowArchPipeline");
         return [];
+    }
+}
+
+function normalizeDisplaySettings(settings) {
+    const normalized = { ...DEFAULT_DISPLAY_SETTINGS };
+
+    Object.entries(DISPLAY_SETTING_OPTIONS).forEach(([key, allowedValues]) => {
+        if (allowedValues.has(settings?.[key])) {
+            normalized[key] = settings[key];
+        }
+    });
+
+    return normalized;
+}
+
+function loadDisplaySettings() {
+    try {
+        const storedSettings = localStorage.getItem(DISPLAY_SETTINGS_STORAGE_KEY);
+        return normalizeDisplaySettings(storedSettings ? JSON.parse(storedSettings) : {});
+    } catch (error) {
+        localStorage.removeItem(DISPLAY_SETTINGS_STORAGE_KEY);
+        return { ...DEFAULT_DISPLAY_SETTINGS };
+    }
+}
+
+function saveDisplaySettings() {
+    localStorage.setItem(DISPLAY_SETTINGS_STORAGE_KEY, JSON.stringify(displaySettings));
+}
+
+function syncSettingsControls() {
+    const registerSelect = document.getElementById("register-format-select");
+    const instructionSelect = document.getElementById("instruction-format-select");
+    const dataSelect = document.getElementById("data-format-select");
+
+    if (registerSelect) {
+        registerSelect.value = displaySettings.registers;
+    }
+
+    if (instructionSelect) {
+        instructionSelect.value = displaySettings.instructions;
+    }
+
+    if (dataSelect) {
+        dataSelect.value = displaySettings.data;
+    }
+}
+
+function updateDisplaySetting(key, value) {
+    if (!DISPLAY_SETTING_OPTIONS[key]?.has(value)) {
+        return;
+    }
+
+    displaySettings = {
+        ...displaySettings,
+        [key]: value
+    };
+    saveDisplaySettings();
+
+    if (lastState) {
+        renderState(lastState);
     }
 }
 
@@ -74,6 +147,12 @@ function closeLoadModal() {
     modal.setAttribute("aria-hidden", "true");
 }
 
+function closeSettingsModal() {
+    const modal = document.getElementById("settings-modal");
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+}
+
 async function loadProgramList() {
     const programList = document.getElementById("program-list");
 
@@ -120,6 +199,19 @@ async function openLoadModal() {
     await loadProgramList();
 }
 
+function openSettingsModal() {
+    const modal = document.getElementById("settings-modal");
+    const registerSelect = document.getElementById("register-format-select");
+
+    syncSettingsControls();
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+
+    if (registerSelect) {
+        registerSelect.focus();
+    }
+}
+
 async function createProgram(event) {
     event.preventDefault();
 
@@ -159,22 +251,35 @@ async function createProgram(event) {
 
 window.openLoadModal = openLoadModal;
 window.closeLoadModal = closeLoadModal;
+window.openSettingsModal = openSettingsModal;
+window.closeSettingsModal = closeSettingsModal;
 
 document.addEventListener("DOMContentLoaded", () => {
     const loadButton = document.getElementById("load-program-button");
+    const settingsButton = document.getElementById("settings-button");
     const closeButton = document.getElementById("close-load-modal");
+    const closeSettingsButton = document.getElementById("close-settings-modal");
     const cancelButton = document.getElementById("cancel-load-modal");
     const newButton = document.getElementById("new-program-button");
     const backButton = document.getElementById("back-to-program-list");
     const createForm = document.getElementById("program-create-view");
     const modal = document.getElementById("load-modal");
+    const settingsModal = document.getElementById("settings-modal");
 
     if (loadButton) {
         loadButton.addEventListener("click", openLoadModal);
     }
 
+    if (settingsButton) {
+        settingsButton.addEventListener("click", openSettingsModal);
+    }
+
     if (closeButton) {
         closeButton.addEventListener("click", closeLoadModal);
+    }
+
+    if (closeSettingsButton) {
+        closeSettingsButton.addEventListener("click", closeSettingsModal);
     }
 
     if (cancelButton) {
@@ -200,11 +305,36 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    if (settingsModal) {
+        settingsModal.addEventListener("click", event => {
+            if (event.target === settingsModal) {
+                closeSettingsModal();
+            }
+        });
+    }
+
+    syncSettingsControls();
+
+    [
+        ["register-format-select", "registers"],
+        ["instruction-format-select", "instructions"],
+        ["data-format-select", "data"]
+    ].forEach(([selectId, settingKey]) => {
+        const select = document.getElementById(selectId);
+
+        if (select) {
+            select.addEventListener("change", event => {
+                updateDisplaySetting(settingKey, event.target.value);
+            });
+        }
+    });
 });
 
 document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
         closeLoadModal();
+        closeSettingsModal();
     }
 });
 
@@ -300,7 +430,7 @@ function getHighlightedRegister(state) {
     return lastHighlightedRegister;
 }
 
-function renderRegisters(registers, highlightedRegister = null) {
+function renderRegisters(registers, highlightedRegister = null, formatValue = String) {
     const container = document.getElementById("registers");
 
     container.innerHTML = "";
@@ -326,7 +456,7 @@ function renderRegisters(registers, highlightedRegister = null) {
         registerValue.className = "register-value";
 
         registerAddress.textContent = address;
-        registerValue.textContent = value;
+        registerValue.textContent = formatValue(value, registerIndex);
 
         div.appendChild(registerAddress);
         div.appendChild(registerValue);
@@ -338,6 +468,34 @@ function renderRegisters(registers, highlightedRegister = null) {
 function formatBinary(value, bits) {
     const normalized = Number(value) & ((1 << bits) - 1);
     return normalized.toString(2).padStart(bits, "0");
+}
+
+function formatIntegerValue(value, format, bits = 8) {
+    if (format === "binary") {
+        return formatBinary(value, bits);
+    }
+
+    if (format === "unsigned") {
+        return String(Number(value) & ((1 << bits) - 1));
+    }
+
+    return String(Number(value));
+}
+
+function formatRegisterValue(value) {
+    return formatIntegerValue(value, displaySettings.registers, 8);
+}
+
+function formatDataMemoryValue(value) {
+    return formatIntegerValue(value, displaySettings.data, 8);
+}
+
+function formatInstructionMemoryValue(value) {
+    if (displaySettings.instructions === "binary") {
+        return formatBinary(value, 16);
+    }
+
+    return decodeInstruction(value);
 }
 
 function renderSREG(value) {
@@ -445,6 +603,14 @@ function renderPipelineTable() {
     tableContainer.scrollTop = tableContainer.scrollHeight;
 }
 
+function renderState(state) {
+    renderMemory("instruction-memory", state.instruction_memory, formatInstructionMemoryValue, state.PC);
+    renderMemory("data-memory", state.data_memory, formatDataMemoryValue);
+    renderSREG(state.SREG);
+    renderRegisters(state.registers, getHighlightedRegister(state), formatRegisterValue);
+    updatePipeline(state);
+}
+
 async function updateUI() {
     let state;
     try {
@@ -452,11 +618,8 @@ async function updateUI() {
     } catch (error) {
         return;
     }
-    renderMemory("instruction-memory", state.instruction_memory, decodeInstruction, state.PC);
-    renderMemory("data-memory", state.data_memory);
-    renderSREG(state.SREG);
-    renderRegisters(state.registers, getHighlightedRegister(state));
-    updatePipeline(state);
+    lastState = state;
+    renderState(state);
 }
 updateUI();
 setInterval(updateUI, 500);

@@ -72,6 +72,20 @@ button:active {
     transform: translateY(0);
 }
 
+#settings-button {
+    border-color: rgba(246, 224, 94, 0.55);
+    background: rgba(246, 224, 94, 0.08);
+    color: var(--accent-yellow);
+    font-weight: 700;
+}
+
+#settings-button:hover {
+    border-color: var(--accent-yellow);
+    color: var(--accent-yellow);
+    background: rgba(246, 224, 94, 0.14);
+    box-shadow: 0 0 12px rgba(246, 224, 94, 0.28);
+}
+
 * {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -175,6 +189,45 @@ button:active {
     padding: 0;
     font-size: 20px;
     line-height: 1;
+}
+
+.settings-modal-content {
+    width: min(380px, 100%);
+}
+
+.settings-content {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.settings-row {
+    min-height: 44px;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.settings-row select {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--bg-body);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    outline: none;
+}
+
+.settings-row select:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(3, 218, 198, 0.2);
 }
 
 .program-list {
