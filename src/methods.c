@@ -183,11 +183,20 @@ void jr()
 
 void sal()
 {
-    int8_t b = GPRS[R1] & (1 << 7);
-    GPRS[R1] <<= ((uint8_t)R2_imm);
+    if (R2_imm < 0)
+    {
+        printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, IMM cannot be a negative number!\n", clk, R2_imm);
+        return;
+    }
 
-    if ((GPRS[R1] & (1 << 7)) != b)
-        GPRS[R1] ^= b;
+    if (R2_imm >= 8)
+    {
+        GPRS[R1] = (int8_t)(0);
+    }
+    else
+    {
+        GPRS[R1] = (int8_t)(GPRS[R1] << R2_imm);
+    }
 
     if (GPRS[R1] < 0)
         set(N_FLAG);
@@ -199,14 +208,28 @@ void sal()
     else
         reset(Z_FLAG);
 
-    printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, ((uint8_t)R2_imm), GPRS[R1]);
+    printf("[Cycle: %i]: SAL INSTRUCTION EXECUTED, IMM = %i, R1 = %i\n", clk, R2_imm, GPRS[R1]);
     printf("[Cycle: %i]: SREG = ", clk);
     to_bin(SREG, 8);
 }
 
 void sar()
 {
-    GPRS[R1] = (int8_t)(GPRS[R1] >> R2_imm);
+    if (R2_imm < 0)
+    {
+        printf("[Cycle: %i]: SAR INSTRUCTION EXECUTED, IMM = %i, IMM cannot be a negative number!\n", clk, R2_imm);
+        return;
+    }
+
+    if (R2_imm >= 8)
+    {
+        GPRS[R1] = (GPRS[R1] < 0) ? (int8_t)(-1) : (int8_t)(0);
+    }
+    else
+    {
+        GPRS[R1] = (int8_t)(GPRS[R1] >> R2_imm);
+    }
+
     if (GPRS[R1] < 0)
         set(N_FLAG);
     else

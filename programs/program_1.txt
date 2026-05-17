@@ -1,2 +1,2 @@
-LDI R1 -31
-SAR R1 0
+LDI R2 -32
+SAR R2 7
