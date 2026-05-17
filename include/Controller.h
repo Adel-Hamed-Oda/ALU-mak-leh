@@ -9,3 +9,6 @@ extern int8_t R1;
 extern int8_t R2_imm;
 
 extern int clk;
+extern int gui_mode;
+
+void handleClkCycle();
