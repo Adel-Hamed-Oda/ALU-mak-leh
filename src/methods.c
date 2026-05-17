@@ -17,10 +17,9 @@ void reset(int b)
 
 void add()
 {
-    int tmp = GPRS[R1];
-    tmp += GPRS[R2_imm];
+    unsigned int tmp = (uint8_t)GPRS[R1] + (uint8_t)GPRS[R2_imm];
 
-    if (tmp >> 8)
+    if (tmp > 0xFF)
         set(C_FLAG);
     else
         reset(C_FLAG);
