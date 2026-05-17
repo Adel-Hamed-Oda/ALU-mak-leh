@@ -16,7 +16,7 @@ void to_bin(int16_t x, int bits) {
 }
 
 void fetch() {
-    if (get_instr(PC) == -1) {
+    if (get_instr(PC) == -1 || PC >= INSTRUCTION_MEMORY_SIZE) {
         current_instruction = -1;
         return;
     }

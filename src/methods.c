@@ -132,7 +132,9 @@ void or(){
 }
 
 void jr(){
-    PC = (R1 << 6) | (R2_imm);
+    PC = GPRS[R1];
+    PC <<= 8;
+    PC |= GPRS[R2_imm];
     printf("[Cycle: %i]: JR EXECUTED, PC is now %i\n", clk, PC);
     flush();
 }
